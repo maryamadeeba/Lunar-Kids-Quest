@@ -69,3 +69,12 @@ export function effectWords(eff = {}, keys) {
   return Object.entries(eff).filter(([k, n]) => n !== 0 && (!keys || keys.includes(k)) && resourceName(k) !== k)
     .map(([k, n]) => ({ key: k, icon: resourceIcon(k), text: `${n > 0 ? 'Adds' : 'Drains'} ${resourceName(k)}` }));
 }
+
+/** Results in plain words for children (numbers stay in the grown-up report). */
+const WORDS = {
+  o: ['More air to breathe', 'Less air to breathe'], w: ['More water to drink', 'Less water to drink'],
+  f: ['More food to eat', 'Less food to eat'], s: ['Crew better protected', 'Crew got more radiation'],
+  c: ['More science discoveries', 'Less science'], h: ['Crew stayed strong', 'Crew got less fit'],
+  m: ['Crew stayed strong', 'Crew got less fit'], p: ['More battery power', 'Less battery power'],
+};
+export const resultWords = (k, delta) => (WORDS[k] ? WORDS[k][delta > 0 ? 0 : 1] : `${delta > 0 ? 'More' : 'Less'} ${resourceName(k)}`);
