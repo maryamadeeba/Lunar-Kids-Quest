@@ -573,8 +573,7 @@ function MissionRun({ mission: C, onReplay, onNewDay, initialBase, practice, pre
         {s.phase === 'play' && rd.type === 'choice' && (
           <div className="a-rise" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 10 }}>
             {options.map((o) => {
-              const ch = wordChips(o.eff, C.meters);
-              return <ChoiceCard key={o.id} title={o.title} desc={o.desc} gain={ch.gain} cost={ch.cost} icon={o.icon} iconBg={o.color} selected={s.sel === o.id} compact={options.length > 2}
+              return <ChoiceCard key={o.id} title={o.title} desc={o.desc} icon={o.icon} iconBg={o.color} selected={s.sel === o.id} compact={options.length > 2}
                 onClick={() => { playSound('pick'); set({ sel: o.id, mood: 'think', msg: `${o.title}? Tap Do it! to see what happens.` }); }} />;
             })}
             <button type="button" className="btn btn-yellow" style={{ marginTop: 'auto', height: 58, fontSize: 22 }}
@@ -645,17 +644,15 @@ function MissionRun({ mission: C, onReplay, onNewDay, initialBase, practice, pre
 
 /** One machine switch: name, battery cost, and what it does to the meters. */
 export function MachineButton({ item: it, on, blocked, flag, keys, onClick }) {
-  const ch = wordChips(it.eff, keys);
-  const later = effectWords(it.laterEff || {});
-  const does = [`uses ${cellWord(it.cost)}`, ch.gain, ch.cost, ...later.map((x) => `${x.text} later`)].filter(Boolean).join(', ');
   return (
     <button type="button" className="btn machine-switch" aria-pressed={on} aria-disabled={!!blocked} onClick={onClick}
-      style={{ minHeight: 70, height: 'auto', padding: '6px 8px', borderRadius: 18, border: `4px solid ${on ? 'var(--yellow)' : flag ? 'var(--pink)' : '#D5D8F0'}`, background: blocked ? '#E3E5EE' : on ? 'var(--yellow-soft)' : '#fff', opacity: blocked ? 0.75 : 1, justifyContent: 'flex-start', gap: 8, textAlign: 'left', fontFamily: 'var(--font-body)' }}>
-      <span className="machine-mini" aria-hidden="true"><MachineDrawing kind={machineKind(it)} running={false} compact /></span>
-      <span style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-        <span style={{ fontWeight: 800, fontSize: 13, lineHeight: '16px' }}>{it.name}</span>
-        <span style={{ fontWeight: 800, fontSize: 13, lineHeight: '16px', color: '#3D2A8A' }}><span className="chip-info">🔋 {cellWord(it.cost)}</span> · {blocked ? 'NEEDS SUN' : on ? 'ON' : 'OFF'}{flag ? ' · LIFE SUPPORT' : ''}</span>
-        <span className="machine-mini-effects" aria-label={does}>{effectWords(it.eff || {}, keys).map((x) => <span className="chip-info" key={x.key}>{x.icon} {x.text}</span>)}{later.map((x) => <span className="chip-info" key={'l' + x.key}>⏳ {x.icon} {x.text} later</span>)}</span>
+      style={{ minHeight: 70, height: 'auto', padding: '6px 8px', borderRadius: 18, border: `4px solid ${on ? 'var(--yellow)' : flag ? 'var(--pink)' : '#D5D8F0'}`, background: blocked ? '#E3E5EE' : on ? 'var(--yellow-soft)' : '#fff', opacity: blocked ? 0.75 : 1, textAlign: 'left', fontFamily: 'var(--font-body)' }}>
+      <span className="machine-top">
+        <span className="machine-mini" aria-hidden="true"><MachineDrawing kind={machineKind(it)} running={false} compact /></span>
+        <span className="machine-text">
+          <span className="machine-name">{it.name}</span>
+          <span className="machine-status"><span className="chip-info">🔋 {cellWord(it.cost)}</span> {blocked ? 'NEEDS SUN' : on ? 'ON' : 'OFF'}{flag ? ' · LIFE SUPPORT' : ''}</span>
+        </span>
       </span>
     </button>
   );

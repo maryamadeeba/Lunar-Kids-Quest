@@ -340,7 +340,7 @@ function Mission1Run({ onReplay, practice, previous, onFinish }) {
               <div className="display" style={{ fontSize: 19, lineHeight: '23px' }}>{trip.title}</div>
               <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 6 }}>
                 <span style={{ fontWeight: 800, fontSize: 14 }}>Each trip:</span>
-                {(site === 'ridge' ? ['💧 Adds Water', '🔋 Drains Power'] : ['🔋 Adds Power', '🛡 Drains Radiation safety']).map((w) => <span key={w} className="pill chip-info">{w}</span>)}
+                <span className="pill chip-info">{site === 'ridge' ? '🚙 Rover drives to the ice' : '☀️ Carry a panel into the sun'}</span>
               </div>
               <div role="img" aria-label={`${n} of 3 trips`} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 {[0, 1, 2].map((k) => <span key={k} style={{ width: 30, height: 30, borderRadius: '50%', background: k < n ? (site === 'ridge' ? 'var(--sky)' : 'var(--yellow)') : '#EEF0FF', border: `3px solid ${k < n ? 'var(--navy)' : '#C9CCEB'}` }} />)}
