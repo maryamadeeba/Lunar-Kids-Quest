@@ -129,10 +129,10 @@ function Mission1Run({ onReplay, practice, previous, onFinish }) {
     if (site === 'ridge') {
       const c = SPOTS.crystals[i];
       set({ walking: true, rover: { x: c.x - 23, y: c.y - 30 } });
-      later(() => { moving.current = false; playSound('good'); set({ walking: false, taps, lastD: diff(before, after), mood: 'cheer', msg: `Got the ice! ${MISSION1.trip.ridge.gain}. The rover used ${R.roverTripPower.points} Power.` }); }, 1250);
+      later(() => { moving.current = false; playSound('good'); set({ walking: false, taps, lastD: diff(before, after), mood: 'cheer', msg: 'Got the ice! More water for the crew, but the rover used battery power.' }); }, 1250);
     } else {
       set({ walking: true, at: `panel${i}` });
-      later(() => { moving.current = false; playSound('good'); set({ walking: false, taps, lastD: diff(before, after), mood: 'cheer', msg: `Panel placed! ${MISSION1.trip.crater.gain}. Being outside used ${R.outdoorShield.points} Radiation safety.` }); }, 1250);
+      later(() => { moving.current = false; playSound('good'); set({ walking: false, taps, lastD: diff(before, after), mood: 'cheer', msg: 'Panel placed! More power for the base, but being outside gave the crew some radiation.' }); }, 1250);
     }
   };
   const fixDone = () => {
@@ -422,12 +422,12 @@ function m1Report(s, end) {
   if (site === 'ridge') {
     choices.push(n
       ? { icon: ICONS.drop, iconBg: '#D7F0FF', title: `Sent the rover for ice ${n} ${n === 1 ? 'time' : 'times'}`, got: `+${R.iceTripWater.points * n} Water`, gave: `${R.roverTripPower.points * n} Power`, visual: { deltas: { w: 1, p: -1 } },
-        tip: `So our rover drove to the crater ${n} ${n === 1 ? 'time' : 'times'}. It brought back ${R.iceTripWater.points * n} Water, but the trips used ${R.roverTripPower.points * n} Power. Getting one thing cost us another!` }
+        tip: `So our rover drove to the crater ${n} ${n === 1 ? 'time' : 'times'}. It brought back more water, but the trips used battery power. Getting one thing cost us another!` }
       : { icon: ICONS.drop, iconBg: '#D7F0FF', title: 'Kept the rover parked', got: 'saved Power', gave: 'Water stayed low', visual: { words: [{ text: 'Saved battery power', good: true }, { text: 'Water stayed low', good: false }] }, tip: 'You kept the rover parked. That saved Power, but our Water stayed low.' });
   } else {
     choices.push(n
       ? { icon: ICONS.battery, iconBg: '#FFF4C2', title: `Carried ${n} solar ${n === 1 ? 'panel' : 'panels'} into the sun`, got: `+${R.panelTripPower.points * n} Power`, gave: `${R.outdoorShield.points * n} Radiation safety`, visual: { deltas: { p: 1, s: -1 } },
-        tip: `You carried ${n} solar ${n === 1 ? 'panel' : 'panels'} into the sun. We got ${R.panelTripPower.points * n} more Power, but working outside used ${R.outdoorShield.points * n} Radiation safety of radiation protection.` }
+        tip: `You carried ${n} solar ${n === 1 ? 'panel' : 'panels'} into the sun. We got more power, but working outside gave the crew more radiation.` }
       : { icon: ICONS.battery, iconBg: '#FFF4C2', title: 'Carried no extra panels', got: 'saved Radiation safety', gave: 'Power stayed low', visual: { words: [{ text: 'Crew stayed protected', good: true }, { text: 'Power stayed low', good: false }] }, tip: 'You stayed inside and carried no panels. That saved our Radiation safety, but Power stayed low.' });
   }
   const on = MISSION1.machines.filter((m) => s.on[m.id]);

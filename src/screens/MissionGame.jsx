@@ -107,7 +107,8 @@ function logEntry(C, rd, pick, cells, items, harvest = {}) {
     const shortOff = off.length > 2 ? `${off.slice(0, 2).map((x) => x.name).join(', ')} and ${off.length - 2} more` : offNames;
     const more = listWords(Object.keys(gain).map((k) => resourceName(k)));
     let tip = on.length ? `You powered the ${listWords(on.map((x) => x.name))}${more ? ` and got more ${more}` : ''}.` : 'You kept every machine off to save the battery.';
-    tip += off.length ? ` They used ${used} of ${cells} battery cells, so ${off.length === 1 ? `the ${offNames} had` : `${off.length} other machines had`} to wait.` : ` They used ${used} of ${cells} battery cells.`;
+    const leftTxt = cells - used <= 0 ? 'no battery cells' : `${cells - used} battery ${cells - used === 1 ? 'cell' : 'cells'}`;
+    tip += off.length ? ` That left ${leftTxt}, so ${off.length === 1 ? `the ${offNames} had` : `${off.length} other machines had`} to wait.` : ` That left ${leftTxt}.`;
     tip += ' A cell spent on one machine can’t run another!';
     const first = on[0] || items[0];
     return {
@@ -121,10 +122,10 @@ function logEntry(C, rd, pick, cells, items, harvest = {}) {
     const workers = pick.out + pick.wall;
     const where = [pick.shelter && `${pick.shelter} in the shelter`, pick.wall && `${pick.wall} behind the wall`, pick.out && `${pick.out} outside`].filter(Boolean);
     let tip;
-    if (!workers) tip = `When the storm came, you moved everyone into the shelter. We only lost ${-eff.s} Radiation safety, but science stopped while we waited. Safety first!`;
-    else if (!pick.out) tip = `You kept ${pick.wall} working behind your Moon-dirt wall. We got ${eff.c} Science and lost ${-eff.s} Radiation safety. The trade-off: less science than outside, but much less radiation. The wall you built in Mission 1 paid off!`;
-    else tip = `You left ${pick.out} working outside in the storm. We got the most Science (${eff.c}), but we took ${-eff.s} Radiation safety of radiation. Real crews take shelter fast, because storm particles pass through the body.`;
-    if (harvest.s) tip += ` Because you reinforced the shelter earlier, it blocked more: we kept ${harvest.s} extra Radiation safety.`;
+    if (!workers) tip = 'When the storm came, you moved everyone into the shelter. The crew stayed safe, but science stopped while they waited. Safety first!';
+    else if (!pick.out) tip = `You kept ${pick.wall === 1 ? 'one astronaut' : `${pick.wall} astronauts`} working behind your Moon-dirt wall. You still made some discoveries, and the crew got much less radiation than outside. The wall you built in Mission 1 paid off!`;
+    else tip = `You left ${pick.out === 1 ? 'one astronaut' : `${pick.out} astronauts`} working outside in the storm. You made the most discoveries, but the crew got the most radiation. Real crews take shelter fast, because storm particles pass through the body.`;
+    if (harvest.s) tip += ' Your reinforced shelter blocked even more radiation.';
     return {
       icon: ICONS.shelter, iconBg: '#D7F0FF', title: `Solar storm: ${listWords(where)}`,
       got: workers ? `+${eff.c} Science` : 'crew kept safe', gave: workers ? `${-eff.s} Radiation safety` : `${-eff.s} Radiation safety and science time`, tip,
@@ -133,12 +134,12 @@ function logEntry(C, rd, pick, cells, items, harvest = {}) {
   }
   const n = pick.n;
   const crop = harvest.f || 0;
-  const cropTxt = crop ? `First, the lamps you lit a month ago gave us ${crop} Food. ` : 'No lamps were lit a month ago, so there was no lettuce to pick. ';
+  const cropTxt = crop ? 'First, the lamps you lit a month ago grew lettuce for the crew. ' : 'No lamps were lit a month ago, so there was no lettuce to pick. ';
   return {
     icon: ICONS.plant, iconBg: '#C8F5C2', title: `Watered ${n} of 3 thirsty plants`, visual: { plants: { n, of: 3 } },
     got: n ? `+${eff.f} Food` : 'water saved for the crew', gave: n ? `${-eff.w} Water` : `${-eff.f} Food (plants wilted)`,
-    tip: cropTxt + (n ? `You watered ${n} thirsty ${n === 1 ? 'plant' : 'plants'}. They grew ${eff.f} more Food, but drank ${-eff.w} Water that the crew could have used.`
-      : `You saved all the water for the crew. The crew stayed safe, but the thirsty plants wilted and we lost ${-eff.f} Food.`),
+    tip: cropTxt + (n ? `You watered ${n} thirsty ${n === 1 ? 'plant' : 'plants'}. They grew more food, but drank water the crew could have used.`
+      : 'You saved all the water for the crew, but the thirsty plants wilted and we lost food.'),
   };
 }
 
