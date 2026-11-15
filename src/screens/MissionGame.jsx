@@ -282,13 +282,16 @@ function MissionRun({ mission: C, onReplay, onNewDay, initialBase, practice, pre
     return true;
   };
   const powerGo = () => {
-    if (outWarning(s.on)) return;
+    // One warning per plan: either life support is off, or a supply would run out.
     const missing = lifeOff(rd, s.on, base, C.key);
-    if (missing.length && !s.warned) {
+    const key = JSON.stringify(s.on);
+    if (missing.length && s.warnedPlan !== key) {
       playSound('oops');
-      set({ warned: true, mistake: true, mood: 'worry', msg: `Are you sure? ${listWords(missing.map((m) => m.name))} keeps the crew alive and is off. Press Power on again to go anyway.` });
+      const out = runsOut(s.on);
+      set({ warned: true, warnedPlan: key, mistake: true, mood: 'worry', msg: `Are you sure? The ${listWords(missing.map((m) => m.name))} ${missing.length === 1 ? 'keeps' : 'keep'} the crew alive and ${missing.length === 1 ? 'is' : 'are'} off${out.length ? `, so the crew will run out of ${resourceName(out[0])}` : ''}. Press Power on again to go anyway.` });
       return;
     }
+    if (!missing.length && outWarning(s.on)) return;
     if (rd.math && !commanderMode) setMathOpen(true); else runRound();
   };
 
