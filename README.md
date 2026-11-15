@@ -6,7 +6,7 @@ A Moon-base game where children aged 7–12 become junior astronauts. They share
 
 Built for the **NASA International Space Apps Challenge 2026**, challenge *"Build a Junior Astronaut Mission Trainer"*.
 
-▶ **Play it:**(https://lunar-kids-quest.vercel.app/) (works in any modern browser, on a phone, tablet, laptop or classroom projector; no sign-up)
+▶ **Play it:**[Lunar Kids Quest](https://lunar-kids-quest.vercel.app/) (works in any modern browser, on a phone, tablet, laptop or classroom projector; no sign-up)
 
 ---
 
