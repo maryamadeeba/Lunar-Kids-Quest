@@ -2,15 +2,29 @@ import EmphasizeNumbers from './EmphasizeNumbers.jsx';
 import { useEffect, useRef, useState } from 'react';
 import SpeakButton from './SpeakButton.jsx';
 import MachineAnimation from './MachineAnimation.jsx';
-import { changeClass, resourceIcon, resourceName, transitions } from '../lib/learning.js';
+import { changeClass, resourceIcon, resourceName, transitions, resultWords } from '../lib/learning.js';
 
-export function ResourceTiles({ before = {}, after = {}, cells = 0, neutral = false }) {
-  const tone = (cls) => (neutral ? 'chip-info' : cls);
+export function ResourceTiles({ before = {}, after = {}, cells = 0, total = 0, neutral = false }) {
   const changes = transitions(before, after);
+  const tone = (cls) => (neutral ? 'chip-info' : cls);
   return <div className="picture-resources" aria-live="polite" aria-atomic="true">
-    {cells > 0 && <div className={`picture-resource ${tone('tradeoff-loss')}`}><span aria-hidden="true">🔋</span><b>−{cells}</b><small>cells used</small></div>}
-    {changes.map(x => <div className={`picture-resource ${tone(changeClass(x.delta))}`} key={x.key}><span aria-hidden="true">{resourceIcon(x.key)}</span><b>{x.from} → {x.to}</b><small>{resourceName(x.key)} (<strong className="result-number">{x.delta > 0 ? '+' : '−'}{Math.abs(x.delta)}</strong>)</small></div>)}
-    {!changes.length && <div className="picture-resource"><span aria-hidden="true">⚖️</span><b>Steady</b><small>Our meters stayed level</small></div>}
+    {cells > 0 && <BatteryLeft used={cells} total={total} />}
+    {changes.map(x => <div className={`picture-meter ${tone(changeClass(x.delta))}`} key={x.key} role="img" aria-label={resultWords(x.key, x.delta)}>
+      <span className="pm-icon" aria-hidden="true">{resourceIcon(x.key)}</span>
+      <span className="pm-body"><b>{x.delta > 0 ? '▲' : '▼'} {resultWords(x.key, x.delta)}</b>
+        <span className="pm-bar" aria-hidden="true"><i style={{ width: `${Math.max(0, Math.min(10, x.to)) * 10}%` }} /></span></span>
+    </div>)}
+    {!changes.length && <div className="picture-meter tradeoff-neutral"><span className="pm-icon" aria-hidden="true">⚖️</span><span className="pm-body"><b>Supplies stayed steady</b></span></div>}
+  </div>;
+}
+
+/** The battery as cells: yellow = left, grey = used. */
+export function BatteryLeft({ used = 0, total = 0 }) {
+  const left = Math.max(0, total - used);
+  return <div className="picture-meter battery-left" role="img" aria-label={total ? `${left} battery ${left === 1 ? 'cell' : 'cells'} left` : `${used} battery cells used`}>
+    <span className="pm-icon" aria-hidden="true">🔋</span>
+    <span className="pm-body"><b>{total ? `${left} battery ${left === 1 ? 'cell' : 'cells'} left` : `Used ${used} battery cells`}</b>
+      {total > 0 && <span className="cells-row" aria-hidden="true">{Array.from({ length: total }, (_, i) => <i key={i} className={i < left ? 'left' : ''} />)}</span>}</span>
   </div>;
 }
 
@@ -27,7 +41,7 @@ export default function FlashcardDeck({ cards, onDone, endExtra = null, start = 
     <div className="flash-top"><span className="learning-eyebrow">{card.kicker || kicker}</span><span className="flash-top-right"><span className="flash-count" aria-live="polite">{index + 1} / {cards.length}</span>{index + 1 < cards.length && <button type="button" className="flash-skip" onClick={onDone} aria-label={`Skip the cards: ${doneLabel}`}>Skip ⏭</button>}</span></div>
     <div className={`flash-face ${back ? 'flash-back' : 'flash-front'}`} key={`${index}-${back}`} ref={face} tabIndex={-1} role="group" aria-label={`${back ? 'Back' : 'Picture'} of card ${index + 1}: ${card.title}`}>
       <h2 className="display">{card.title}</h2>
-      {back ? <><div className="flash-explanation"><p><EmphasizeNumbers text={card.back} /></p><SpeakButton text={card.back} label="Read the back of this card aloud" light /></div>{card.backVisual}{card.details && <details className="flash-source"><summary>More for curious explorers & grown-ups</summary>{card.details}</details>}</>
+      {back ? <><div className="flash-explanation"><div>{card.backTitle && <strong className="did-notice">{card.backTitle}</strong>}<p><EmphasizeNumbers text={card.back} /></p></div><SpeakButton text={[card.backTitle, card.back].filter(Boolean).join(' ')} label="Read the back of this card aloud" light /></div>{card.backVisual}{card.details && <details className="flash-source"><summary>More for curious explorers & grown-ups</summary>{card.details}</details>}</>
         : <>{card.visual || <MachineAnimation item={card.item} kind={card.kind} running />}{card.caption && <p className="flash-caption"><EmphasizeNumbers text={card.caption} /></p>}</>}
     </div>
     <button className="btn btn-soft flash-flip" aria-pressed={back} onClick={() => setBack(v => !v)}>{back ? '↶ Show picture' : '↻ Flip for the story'}</button>

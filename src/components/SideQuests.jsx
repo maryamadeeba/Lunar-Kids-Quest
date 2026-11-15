@@ -8,7 +8,7 @@ import SpeakButton from './SpeakButton.jsx';
 import { ResourceTiles } from './FlashcardDeck.jsx';
 import { MachineDrawing } from './MachineAnimation.jsx';
 import { SourceLink } from './NASAFactCard.jsx';
-import { changeClass, resourceIcon, resourceName, transitions } from '../lib/learning.js';
+import { changeClass, resourceIcon, resourceName, transitions, resultWords } from '../lib/learning.js';
 import { STRATEGIES, readStrategies, pickWords } from '../lib/sideQuests.js';
 
 export const SideQuestTag = ({ children = 'SIDE QUEST' }) => <span className="side-quest-tag">🧭 {children}</span>;
@@ -98,7 +98,7 @@ export function GhostReplay({ ghost, before, onClose }) {
     </div>
     <div className="learning-card">
       <strong>The other choice, compared with yours:</strong>
-      <div className="ghost-diffs">{diffs.length ? diffs.map((x) => <span key={x.key} className={changeClass(x.delta)}>{resourceIcon(x.key)} <strong>{x.delta > 0 ? '+' : '−'}{Math.abs(x.delta)}</strong> {resourceName(x.key)}</span>) : <span className="tradeoff-neutral">Same result</span>}</div>
+      <div className="ghost-diffs">{diffs.length ? diffs.map((x) => <span key={x.key} className={changeClass(x.delta)}>{x.delta > 0 ? '▲' : '▼'} {resourceIcon(x.key)} <strong>{resultWords(x.key, x.delta)}</strong></span>) : <span className="tradeoff-neutral">Same result</span>}</div>
       <small>Worked out with the same game rules from the same starting supplies. Game units, not NASA measurements.</small>
     </div>
     <button className="btn btn-yellow" onClick={onClose}>Back to my mission</button>
@@ -111,9 +111,8 @@ export function RewindCompare({ first, now }) {
   return <section className="learning-card" aria-label="Engineer’s rewind: what changed">
     <SideQuestTag>ENGINEER’S REWIND</SideQuestTag>
     <strong>You changed your plan. Here is the difference:</strong>
-    <table className="plan-table"><thead><tr><th>Supply</th><th>First try</th><th>Now</th></tr></thead><tbody>
-      {keys.map((k) => <tr key={k}><th>{resourceIcon(k)} {resourceName(k)}</th><td><strong className="result-number">{first[k]}</strong></td><td className={changeClass(now[k] - first[k])}><strong className="result-number">{now[k]}</strong> {now[k] !== first[k] && <small>({now[k] > first[k] ? '+' : '−'}{Math.abs(now[k] - first[k])})</small>}</td></tr>)}
-    </tbody></table>
+    <div className="learning-eyebrow">YOUR NEW TRY, COMPARED WITH THE FIRST</div>
+    <ResourceTiles before={first} after={now} />
     <small>Failure gives engineers information. Your earned stars and official progress stay safe.</small>
   </section>;
 }

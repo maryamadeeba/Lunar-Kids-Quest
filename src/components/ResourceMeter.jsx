@@ -25,7 +25,7 @@ export function ResourceMeter({ name, color, value, delta = 0, essential = false
       </div>
       {delta !== 0 && (
         <div className="a-pop" style={{ position: 'absolute', top: -9, right: -3, height: 20, padding: '0 6px', borderRadius: 10, background: delta > 0 ? 'var(--gain-color)' : 'var(--loss-color)', color: 'var(--tradeoff-ink)', fontWeight: 800, fontSize: 13, lineHeight: '20px' }}>
-          {delta > 0 ? `+${delta}` : `−${Math.abs(delta)}`}
+          <span aria-label={delta > 0 ? 'went up' : 'went down'}>{delta > 0 ? '▲' : '▼'}</span>
         </div>
       )}
     </div>

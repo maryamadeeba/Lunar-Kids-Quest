@@ -9,9 +9,9 @@ import Sheet from './Sheet.jsx';
 import ChanduMascot from './ChanduMascot.jsx';
 import SpeakButton from './SpeakButton.jsx';
 
-export function ConsequenceReveal({ before, after, preview = false, cause, cells = 0 }) {
+export function ConsequenceReveal({ before, after, preview = false, cause, cells = 0, total = 0 }) {
   if (!before || !after) return null;
-  return <section className="learning-card compact-consequence" aria-label={preview ? 'Plan preview' : 'Actual resource changes'}><div className="learning-eyebrow">{preview ? 'YOUR PLAN' : 'WHAT CHANGED'}</div><ResourceTiles before={before} after={after} cells={cells} neutral={preview} /><details><summary>Why did supplies change?</summary><p>{cause || explainTransition(before, after, cells)}</p><small>Game units, including crew use, harvests, and meter limits. Not NASA measurements.</small></details></section>;
+  return <section className="learning-card compact-consequence" aria-label={preview ? 'Plan preview' : 'Actual resource changes'}><div className="learning-eyebrow">{preview ? 'YOUR PLAN' : 'WHAT CHANGED'}</div><ResourceTiles before={before} after={after} cells={cells} total={total} neutral={preview} /><details><summary>Why did supplies change?</summary><p>{cause || explainTransition(before, after, cells)}</p><small>Game units, including crew use, harvests, and meter limits. Not NASA measurements.</small></details></section>;
 }
 
 export function LearningReport({ before, after, ids = [], previous, practice = false, onReplay }) {

@@ -2,6 +2,7 @@ import EmphasizeNumbers from './EmphasizeNumbers.jsx';
 import FlashcardDeck, { ResourceTiles } from './FlashcardDeck.jsx';
 import Sheet from './Sheet.jsx';
 import { MachineDrawing } from './MachineAnimation.jsx';
+import TradeoffPicture from './TradeoffPicture.jsx';
 import { changeClass, LESSONS, resourceIcon } from '../lib/learning.js';
 import { scienceStory } from '../lib/visualLearning.js';
 import { resourceName } from '../lib/learning.js';
@@ -77,7 +78,7 @@ function FullReport({ kicker, stars, dayReport, rows, goal, choices, carryText, 
         </tbody></table>
         {goal && <p><b>Bonus goal:</b> {goal.text} · {goal.met ? 'reached ✓' : 'not reached this time'}</p>}
       </section>
-      {choices.length > 0 && <section className="learning-card"><strong>My choices</strong>{choices.map((c) => <div key={c.title} className="report-choice"><b>{c.title}</b><div className="choice-picture"><span className="tradeoff-gain">↗ <EmphasizeNumbers text={c.got} /></span><span className="tradeoff-loss">↘ <EmphasizeNumbers text={c.gave} /></span></div><p><EmphasizeNumbers text={c.tip} /></p></div>)}</section>}
+      {choices.length > 0 && <section className="learning-card"><strong>My choices</strong>{choices.map((c) => <div key={c.title} className="report-choice"><b>{c.title}</b><div className="choice-picture"><span className="tradeoff-gain">↗ <EmphasizeNumbers text={c.got} /></span><span className="tradeoff-loss">↘ <EmphasizeNumbers text={c.gave} /></span></div><p><EmphasizeNumbers text={c.story || c.tip} /></p></div>)}</section>}
       {(carryText || wrap) && <section className="learning-card">{carryText && <p>{carryText}</p>}{wrap && <p>{wrap}</p>}</section>}
       {nasa && <section className="learning-card"><strong>Real NASA connection</strong><p>{nasa.real}</p>{nasa.links.map((l) => <SourceLink key={l.label} link={l} />)}</section>}
     </div>
@@ -114,12 +115,26 @@ export default function BaseReport({ kicker, stars, mate = 'amina', site, wall, 
         <CommanderFigure suit={suit} style={{ left: 268, top: 146 }} />
       </Stage>
   );
+  // Mission-end cards: what the child traded, shown as an animation, then a short story on the back.
+  const story = (text) => String(text || '').split(/(?<=[.!?])\s+/).filter((x) => !/^Includes crew use/.test(x)).slice(0, 3).join(' ');
+  const deltas = Object.keys(after).filter((k) => typeof before[k] === 'number').map((k) => ({ k, d: after[k] - before[k] }));
+  const up = deltas.filter((x) => x.d > 0).sort((a, b) => b.d - a.d)[0];
+  const down = deltas.filter((x) => x.d < 0).sort((a, b) => a.d - b.d)[0];
+  const whole = up && down ? `Your ${resourceName(up.k)} went up, but your ${resourceName(down.k)} went down. To get more of one thing, you gave up some of another. That is a trade-off, and NASA engineers make them every day.`
+    : up ? `Your ${resourceName(up.k)} went up and nothing ran low. Your plan shared the supplies well, just like a real crew must.`
+      : down ? `Your ${resourceName(down.k)} went down. The crew used supplies faster than the base made them. What could you power next time?`
+        : 'Your supplies stayed steady. Every machine you powered used battery cells another machine could have had.';
   const cards = [
-    { title: 'Our base report', visual: basePicture, caption: `${stars} of 3 stars · ${learning?.practice ? 'comparison plan' : 'mission complete'}`, back: 'Look at the home your choices helped build.', details: <p>{carryText}</p> },
-    { title: 'What changed?', caption: 'Game units · actual mission result', visual: <ResourceTiles before={before} after={after} />, back: 'Some supplies went up. Others went down. Our crew shared them.', details: <><p>{goal?.text} {goal?.met ? 'Goal reached.' : 'Try another plan next time.'}</p><p>{carryText}</p></> },
-    ...choices.map((choice, i) => ({ title: `Your choice ${i + 1}`, visual: <><MachineDrawing kind={scienceStory(choice.title + ' ' + choice.tip).kind} running /><div className="choice-picture"><span className={/^(no net|nothing|no extra)/i.test(choice.got) ? 'tradeoff-neutral' : 'tradeoff-gain'}>↗ <EmphasizeNumbers text={choice.got} /></span><span className="tradeoff-loss">↘ <EmphasizeNumbers text={choice.gave} /></span></div></>, back: `You gained ${choice.got}. You gave up ${choice.gave}.`, details: <><h3>{choice.title}</h3><p><EmphasizeNumbers text={choice.tip} /></p></> })),
-    ...(learning?.previous ? [{ title: 'Two plans, different results', visual: <table className="plan-table"><thead><tr><th>Supply</th><th>First</th><th>Now</th></tr></thead><tbody>{Object.keys(after).filter(k => typeof learning.previous[k] === 'number').map(k => <tr key={k}><th>{resourceIcon(k)} {resourceName(k)}</th><td><strong className="result-number">{learning.previous[k]}</strong></td><td className={changeClass(after[k] - learning.previous[k])}><strong className="result-number">{after[k]}</strong> <small>({after[k] > learning.previous[k] ? '+' : after[k] < learning.previous[k] ? '−' : ''}{Math.abs(after[k] - learning.previous[k])})</small></td></tr>)}</tbody></table>, back: 'Same starting supplies. Same conditions. A different choice changed the result.' }] : []),
-    { title: 'You are a mission planner!', visual: <><img className="report-crew" src="/assets/crew-full.webp" alt="Your crew celebrates" /><div className="discovery-pictures">{ids.map(id => LESSONS[id] && <span key={id}>✦ {LESSONS[id].title}</span>)}</div></>, back: ids.length ? LESSONS[ids[0]]?.text : 'Engineers test ideas. What would you try differently?', details: <><p>{wrap}</p>{nasa && <><p>{nasa.real}</p>{nasa.links.map(l => <SourceLink key={l.label} link={l} />)}</>}<button className="btn btn-soft" onClick={onReplay}>Try another plan</button></> },
+    ...choices.map((choice, i) => ({
+      title: choice.title, kicker: `TRADE-OFF ${i + 1} OF ${choices.length}`,
+      visual: choice.visual ? <TradeoffPicture v={choice.visual} /> : <><MachineDrawing kind={scienceStory(choice.title + ' ' + (choice.story || choice.tip)).kind} running /><div className="choice-picture"><span className="tradeoff-gain">▲ {choice.got}</span><span className="tradeoff-loss">▼ {choice.gave}</span></div></>,
+      caption: 'Green: what you got. Red: what it cost.',
+      backTitle: 'Did you notice?', back: story(choice.story || choice.tip),
+    })),
+    { title: 'Your whole mission', kicker: 'THE BIG TRADE-OFF', visual: <ResourceTiles before={before} after={after} />, caption: `${stars} of 3 stars · ${learning?.practice ? 'practice plan' : 'mission complete'}`,
+      backTitle: 'Did you notice?', back: whole, details: <>{goal && <p>{goal.text} {goal.met ? 'Goal reached.' : 'Try another plan next time.'}</p>}<p>{carryText}</p></> },
+    ...(learning?.previous ? [{ title: 'Two plans, different results', kicker: 'COMPARED WITH YOUR FIRST PLAN', visual: <ResourceTiles before={learning.previous} after={after} />,
+      backTitle: 'Did you notice?', back: 'You started with the same supplies both times. Only your choices changed, and so did the result.' }] : []),
   ];
   const collect = () => { playSound('win'); onCollect(); };
   const rows = Object.keys(after).filter((k) => typeof before[k] === 'number').map((k) => ({ key: k, name: resourceName(k), from: before[k], to: after[k] }));
