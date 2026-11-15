@@ -449,3 +449,4 @@ button:disabled { opacity: .55; cursor: not-allowed; }
 .flash-top-right { display:flex; align-items:center; gap:8px; }
 .flash-skip { min-height:44px; min-width:44px; padding:6px 14px; border-radius:999px; border:2px solid #c8cdf0; background:#fff; color:#17234a; font:inherit; font-weight:900; font-size:15px; cursor:pointer; }
 .flash-skip:focus-visible { outline:4px solid #4FC3F7; outline-offset:2px; }
+.header-back { position:relative; z-index:60; } /* stays tappable above any open card */
