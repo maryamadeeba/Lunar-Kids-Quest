@@ -412,7 +412,7 @@ button:disabled { opacity: .55; cursor: not-allowed; }
 .new-day .learning-actions { display:grid; grid-template-columns:1fr; }
 .new-day .btn { width:100%; height:auto; min-height:62px; padding:8px; flex-direction:column; line-height:1.2; }
 .new-day .btn small { font-family:var(--font-body); font-weight:800; font-size:12px; }
-@media (max-width: 380px) { .strategy-grid { grid-template-columns:repeat(2, minmax(0,1fr)); } .ghost-grid, .prep-grid { grid-template-columns:1fr; } .sun-facts { grid-template-columns:1fr; } }
+@media (max-width: 380px) { .strategy-grid { grid-template-columns:repeat(2, minmax(0,1fr)); } .ghost-grid { grid-template-columns:1fr; } .sun-facts { grid-template-columns:1fr; } }
 @media (prefers-reduced-motion: reduce) {
   .energy-flow i { animation:none; left:auto; position:static; display:inline-block; margin:0 3px; }
   .energy-flow { display:flex; justify-content:center; }
@@ -450,3 +450,60 @@ button:disabled { opacity: .55; cursor: not-allowed; }
 .flash-skip { min-height:44px; min-width:44px; padding:6px 14px; border-radius:999px; border:2px solid #c8cdf0; background:#fff; color:#17234a; font:inherit; font-weight:900; font-size:15px; cursor:pointer; }
 .flash-skip:focus-visible { outline:4px solid #4FC3F7; outline-offset:2px; }
 .header-back { position:relative; z-index:60; } /* stays tappable above any open card */
+/* Machine buttons: picture + name on top, simple word chips underneath (never wider than the card). */
+.machine-switch { flex-direction:column; align-items:stretch; justify-content:flex-start; gap:6px; min-width:0; overflow:hidden; }
+.machine-top { display:flex; align-items:center; gap:8px; min-width:0; }
+.machine-text { display:flex; flex-direction:column; gap:2px; min-width:0; }
+.machine-name { font-weight:800; font-size:14px; line-height:17px; overflow-wrap:anywhere; }
+.machine-status { font-weight:800; font-size:13px; line-height:18px; color:#3D2A8A; }
+.machine-mini-effects { min-width:0; }
+.machine-mini-effects .chip-info { white-space:normal; max-width:100%; overflow-wrap:anywhere; }
+
+/* "Did you notice?" on the back of mission-end cards */
+.flash-explanation > div { flex:1; display:flex; flex-direction:column; gap:4px; }
+.did-notice { display:block; font-family:var(--font-display, inherit); font-size:20px; color:#5B41B8; }
+
+/* One button system across the game: 2 sizes only. Round and back buttons keep their own shape. */
+.btn-yellow, .btn-white { height:auto !important; min-height:60px !important; padding:8px 16px; font-size:20px !important; line-height:1.15 !important; border-radius:20px !important; }
+.btn-soft { height:auto !important; min-height:52px !important; padding:8px 14px; font-size:17px !important; line-height:1.2 !important; border-radius:18px !important; }
+.flash-navigation .btn-white { min-height:60px !important; min-width:56px; }
+.btn-yellow small, .btn-white small, .btn-soft small { font-size:13px; }
+@media (max-width:380px) { .btn-yellow, .btn-white { font-size:18px !important; } .btn-soft { font-size:16px !important; } }
+
+/* ---------- Picture results (words + bars, no numbers) ---------- */
+.picture-meter { display:flex; align-items:center; gap:8px; padding:8px 10px; border-radius:14px; border:2px solid #d7e4f7; background:#fff; color:#17234a; min-width:0; flex:1 1 150px; text-align:left; }
+.picture-meter.tradeoff-gain { background:var(--gain-color); border-color:var(--gain-color); color:var(--tradeoff-ink); }
+.picture-meter.tradeoff-loss { background:var(--loss-color); border-color:var(--loss-color); color:var(--tradeoff-ink); }
+.pm-icon { font-size:24px; line-height:1; flex:none; }
+.pm-body { display:flex; flex-direction:column; gap:4px; min-width:0; flex:1; }
+.pm-body b { font-size:15px; line-height:18px; font-weight:900; }
+.pm-bar { display:block; height:8px; border-radius:4px; background:rgba(0,0,0,.18); overflow:hidden; }
+.pm-bar i { display:block; height:100%; background:#fff; border-radius:4px; animation:pm-fill .9s ease-out; }
+.picture-meter.chip-info .pm-bar i { background:#5B41B8; }
+@keyframes pm-fill { from { width:0; } }
+.battery-left { background:#fffbe6; border-color:#FFD21F; }
+.cells-row { display:flex; flex-wrap:wrap; gap:3px; }
+.cells-row i { width:12px; height:16px; border-radius:3px; background:#d5d8e6; }
+.cells-row i.left { background:#FFD21F; box-shadow:inset 0 0 0 1.5px #c99a00; }
+.tradeoff-picture { display:flex; flex-direction:column; gap:8px; color:#17234a; }
+.tp-machines { display:grid; grid-template-columns:repeat(auto-fill, minmax(92px, 1fr)); gap:6px; }
+.tp-machine { display:flex; flex-direction:column; align-items:center; gap:2px; padding:6px 4px; border-radius:12px; text-align:center; font-size:12px; line-height:14px; }
+.tp-machine b { font-size:12px; overflow-wrap:anywhere; }
+.tp-machine small { font-weight:900; font-size:11px; }
+.tp-machine.on { background:#fffbe6; border:2px solid #FFD21F; box-shadow:0 0 0 0 rgba(255,210,31,.6); animation:tp-glow 1.8s ease-in-out infinite; }
+.tp-machine.off { background:#eceef4; border:2px dashed #c8cdf0; color:#6A6F9E; filter:grayscale(1); }
+.tp-icon { width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:#e3e6f2; }
+@keyframes tp-glow { 50% { box-shadow:0 0 0 4px rgba(255,210,31,.35); } }
+.tp-crew { display:flex; flex-wrap:wrap; gap:6px; }
+.tp-zone { flex:1 1 90px; display:flex; flex-direction:column; gap:4px; padding:6px; border-radius:12px; background:#eef4ff; text-align:center; }
+.tp-zone.z-out { background:#FFE3CC; } .tp-zone.z-wall { background:#E6E0FF; } .tp-zone.z-shelter { background:#D7F0FF; }
+.tp-zone small { font-weight:900; font-size:12px; }
+.tp-zone img { width:30px; height:30px; border-radius:50%; background:#fff; object-fit:cover; border:2px solid #fff; margin:0 1px; }
+.tp-plants { display:flex; justify-content:center; gap:14px; font-size:34px; }
+.tp-plants span { display:flex; flex-direction:column; align-items:center; }
+.tp-plants small { font-size:12px; font-weight:900; }
+.tp-plants .thirsty { filter:saturate(.4); }
+.result-words { display:flex; flex-wrap:wrap; gap:6px; }
+.result-words span { padding:6px 10px; border-radius:12px; font-weight:900; font-size:15px; line-height:18px; border:2px solid transparent; }
+.flash-face .tradeoff-picture .picture-meter { flex:1 1 100%; }
+@media (prefers-reduced-motion: reduce) { .pm-bar i, .tp-machine.on { animation:none; } }
