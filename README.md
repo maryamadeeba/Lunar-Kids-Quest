@@ -1,206 +1,105 @@
-# Lunar Kids Quest
+# 🌙 Lunar Kids Quest
 
 **Little Astronauts. Big Decisions.**
 
-A Moon mission game for children aged 7–12, built for the NASA International Space Apps Challenge 2026 challenge "Build a Junior Astronaut Mission Trainer".
+A Moon-base game where children aged 7–12 become junior astronauts. They share one battery between air, water, food, the radio to Earth and science; hide their crew from a real NASA solar storm; and survive the long, freezing Moon night. Along the way they discover the idea behind every real space mission: **every choice is a trade-off.**
 
-Children run one Moon outpost across four missions and learn the core idea behind real space missions: **every choice is a trade-off.** Life support, radiation shielding, power and food production all compete for the same battery, and the base the child builds in one mission carries into the next. After each choice, a "Real NASA Mission" card shows how NASA engineers face the same problem, with a link to the NASA source.
+Built for the **NASA International Space Apps Challenge 2026**, challenge *"Build a Junior Astronaut Mission Trainer"*.
 
-## Run it on your computer
+▶ **Play it:** ADD-YOUR-VERCEL-LINK-HERE (works in any modern browser, on a phone, tablet, laptop or classroom projector; no sign-up)
 
-You need [Node.js](https://nodejs.org) 20 or newer.
+---
 
-```bash
-npm install
-npm run dev
-```
+## How it answers the challenge
 
-Open the address it prints (usually http://localhost:5173).
+| The challenge asks for… | In Lunar Kids Quest |
+|---|---|
+| Mission scenarios a junior astronaut must manage | Five missions on one Moon base: choosing a home, making air, growing food, a real solar storm and a Moon night, then Mars |
+| Trade-offs between life support, communications and science | Every power round shares one battery between life-support machines, a “Radio to Earth” and science equipment. Choose one and you can’t power another |
+| Clear consequences of decisions | After each choice, the child sees exactly what went up (green) and what went down (red), then a NASA card explaining how real engineers face the same problem |
+| Real NASA data | Live NASA DONKI space-weather check, three real 2024 solar storms, NASA life-support ratios, OSDR RadLab radiation readings, OSDR biology studies and real NASA photos, each with a link to its source |
+| Suitable for young learners | Two age levels, read-aloud, tap-to-explain words, picture flashcards, simple word choices and a kind “mission abort” that teaches instead of punishes |
 
-To check the game balance (plays every possible strategy in every mission):
+## How to play
 
-```bash
-npm run test:balance
-```
+Pick a nickname, a suit colour and a level (**Explorer**, ages 7–9, or **Commander**, ages 10–12), meet the crew (Amina the engineer, Bilal the scientist and Zoya the botanist) and Chandu the robot guide, then follow the Moon Map.
 
-To check the production build:
+1. **Mission 1 · Find Our Moon Home:** walk to a sunny ridge or an icy crater, build the base, then send the rover for ice or carry solar panels. NASA’s real plan (sunny rim plus ice from the crater) earns 3 stars.
+2. **Mission 2 · Save Our Oxygen:** make air from water, recycle water and keep the crew fit, all from one battery.
+3. **Mission 3 · Grow Food on the Moon:** plant lamps cost water and power today, but the lettuce only arrives a month later.
+4. **Final · A Moon Stay:** a sunny work day, a **real NASA solar storm** with a countdown from its real warning time, a long dark spell and sunrise.
+5. **Bonus · Mars Mode:** Mission Control is 6 to 44 minutes away, so its help arrives too late. Kids decide alone.
 
-```bash
-npm run build
-npm run preview
-```
+**The base grows with the child:** the site, the Moon-dirt wall, the Oxygen Tank and the Greenhouse built in one mission carry into the next.
 
-## Deploy to Vercel
+**Kids do things, they don’t answer quizzes.** They switch machines on within the battery, walk the commander, move each astronaut to safety in the storm and water thirsty plants one by one. Before a choice, each option says simply what it does (“Adds Air”, “Drains Water”). The numbers and the trade-off appear after the choice, so the result is the lesson.
 
-1. Push this folder to a GitHub repository.
-2. In Vercel, choose **Add New → Project** and import the repository.
-3. Vercel detects **Vite** automatically. Keep the defaults:
-   - Build command: `npm run build`
-   - Output directory: `dist`
-4. Press **Deploy**.
+### Side quests (optional)
 
-No extra Vercel settings are needed: screens use hash links (for example `/#map`), so every page works without server rewrites.
+Open the **🧭 Side quests** button on the Moon Map to see where each one is. None of them change stars or the saved base.
 
-## How the project is organised
+- ☀️ **Scan the Sun:** tap the telescope to see the real NASA record behind today’s storm, when it was checked, and whether it is recent or archived.
+- 🛡️ **Shelter versus science:** before the storm, choose between reinforcing the shelter and powering the science drill.
+- 👻 **What if? Try the other choice:** after the storm, see your plan beside the other choice from the same start.
+- 🌗 **New mission day:** replay the Final with another real storm and a different darkness.
+- ⏪ **Engineer’s rewind:** after a tricky round, go back to the decision, change one thing and see the difference.
+- 📒 **My Strategy Collection:** illustrated cards like “I saved power for darkness”, each holding the child’s real before-and-after result.
 
-```
-src/
-  App.jsx                 picks which screen to show
-  main.jsx                starts React
-  styles.css              colours, buttons, cards, animations
-  data/
-    ratios.js             EVERY game number: size tier, NASA ratio or estimate, and why
-    missions.js           Missions 2, 3 and Final: rounds, machines, choices, NASA cards
-    mission1.js           Mission 1 sites, machines, questions, tips, the map list
-  screens/
-    Welcome.jsx           start screen
-    CommanderSetup.jsx    nickname, suit colour, age level
-    Crew.jsx              meet Amina, Bilal and Zoya
-    MapScreen.jsx         the Moon Map with the four missions
-    Briefing.jsx          Mission 1 briefing
-    Mission1Game.jsx      Mission 1: walk, scan, build, fix, power, run the base for a day
-    Mission1Complete.jsx  Mission 1 reward and "Your choices vs. NASA's"
-    MissionGame.jsx       shared engine for Missions 2, 3 and the Final
-    Dashboard.jsx         XP, badges, Moon base, mission notebook
-  components/
-    ChanduMascot.jsx      the robot mascot with five moods
-    ResourceMeter.jsx     the 0–10 meters (hearts mark life support)
-    ProgressHeader.jsx    back button, steps, mission clock, stars
-    MissionDialogue.jsx   Chandu's speech, hint button, Mission Control call
-    ChoiceCard.jsx        a choice with its gain and cost shown up front
-    PuzzleCard.jsx        maths puzzle and battery cells
-    NASAFactCard.jsx      "Real NASA Mission" card
-    MissionSheets.jsx     ready screen, engineer question, mission abort, star pop-up
-    RewardModal.jsx       mission complete screen
-    BaseReport.jsx        Base Report: base, crew, choices, trade-offs, crewmate explanations
-    BaseStrip.jsx         "Your base": site, modules and the meters carried forward
-    NumbersSheet.jsx      "How we made the numbers", built from ratios.js
-    MissionMap.jsx        map path, mission nodes (MissionCard) and base parts
-    MoonParts.jsx         stars, Earth, sun, panels, dome, tank, greenhouse, rover, commander
-    Stage.jsx             scales the 390-px game drawings to any screen width
-    Sheet.jsx, Icon.jsx   small building blocks
-  hooks/useMissionClock.js  the countdown that pauses while reading
-  lib/
-    missionLogic.js       pure game rules (carry-over, cells, effects, stars)
-    mission1Logic.js      pure Mission 1 rules
-    storage.js, sound.js, router.js
-scripts/balance-test.mjs  plays every strategy and checks the design rules
-public/assets/            character images
-```
+## Designed for children aged 7–12
 
-### Changing a mission
+- **Two levels:** Explorer gets more time, a battery-counting puzzle and gentle highlights after a mistake. Commander gets less time and no highlights.
+- **At most three meters plus a score** per mission, so young players never track too much at once.
+- **Read-aloud** on Chandu’s messages, briefings and NASA cards (the device’s own voice: works offline, sends nothing).
+- **Tap-to-explain words** such as radiation, solar flare, life support and Moon dirt.
+- **Flashcards with a Skip button:** briefings, NASA cards and the Base Report are picture cards that flip for the story. Children can skip any time, and the full written report is available to view or download at the end.
+- **Kind failure:** if life support runs out, the crew is safe, the child hears the real Apollo 13 story and can try again.
+- **Hints, not answers:** the **?** button asks a guiding question; Mission Control gives the answer (once per mission, after a real radio delay).
+- **Accessible:** large text, big buttons, keyboard and screen-reader support, reduced-motion support, checked with automated accessibility tests (axe-core) on every screen.
+- **Local touches** for children in Pakistan: storm times shown in Pakistan time, Urdu greetings like “Salam” and “Shabash”.
 
-- **Numbers:** change them in `src/data/ratios.js` only. Each value has a size tier (Tiny 1, Small 2, Medium 3, Large 4, Huge 6), a basis (`nasa` or `estimate`) and a reason. When you find a real NASA number, change the tier, set `basis: 'nasa'` and add the source; the "How we made the numbers" sheet updates by itself.
-- **Rounds and text:** `src/data/missions.js` lists each round's battery cells, machines, choices, guiding question (`ask`), Mission Control answer (`tip`) and NASA card. `essentials` must never reach 0. `carry` lists the meters that start from the child's base.
-- After a change, run `npm run test:balance`.
+## Real NASA data
 
-## Game rules in short
-
-- **Mission clock** (Explorer gets more time than Commander). It pauses while reading NASA cards.
-- **At most 3 meters plus a score per mission,** so young players are never tracking 5 or 6 things at once.
-- **Life support** meters have a heart. If one reaches 0, the mission aborts kindly, with the real Apollo 13 story.
-- **One outpost.** The site chosen in Mission 1, the Moon-dirt wall, the Oxygen Tank (after Mission 2) and the Greenhouse (after Mission 3) carry forward. Each mission starts from the meters the base ended with (kept between 3 and 8 so no mission starts impossible).
-- **Kids do things, they don't answer quizzes.** They switch machines on within a battery, walk the commander, send the rover, move each astronaut to safety during a real solar storm (countdown from the storm's real warning time), and water thirsty plants one by one. Every action shows its gain and cost before they confirm.
-- **Base Report** after every mission: the base they built, the crew, each choice with "Got" and "Gave up", how every meter changed, what carries forward, and a crewmate (Amina, Zoya or Bilal) who explains each trade-off in their own words.
-- **Stars** come from smart rounds (no low meter, life support on, nobody left outside in a storm) and a bonus goal the child reaches by playing (for example "finish with Oxygen 8 or more"). **3 stars only if life support stayed on and nobody was left outside in the storm**, following NASA's rule that keeping the crew alive comes first. In Mission 1, only the NASA plan (sunny rim + ice from the crater) can reach 3 stars; Crater Edge still works for 2.
-- **Kids make the decisions.** The ? button asks a guiding question. The answer only appears after a mistake or when the child calls Mission Control (once per mission). Explorer level may highlight life support after a mistake; Commander level never does.
-- **Radio delay:** Mission Control's answer has to travel to Earth and back. It arrives after 2.5 s (Explorer: light-speed only, CSA) or 6 s (Commander: the low end of NASA's expected 3–14 s each way with relays). The mission clock and any storm countdown keep running while the child waits. The reply also says a Mars crew would wait 6 to 44 minutes.
-- **Solar storm (real DONKI events):** each play of the Final uses one of three real 2024 storms in turn (9 Feb X3.3, 29 Jan M6.8, 12 Feb no-flare surprise). The countdown is the real time from NASA's alert to the storm reaching Earth, scaled at 1 game second = 3 real minutes (never under 7 s): 35 min → 12 s, 55 min → 18 s, 19 min → 7 s. When the clock runs out, anyone still outside is caught in the storm. Shield loss follows the Artemis I ratio: the whole crew outside loses 4 times as much as the whole crew in the shelter. Outside gives the most science, behind the wall a little, the shelter none: a real trade-off, but leaving anyone outside caps the mission at 2 stars.
-- **Delayed results:** plant lamps cost water and power now, but their food arrives a month later (lettuce takes about a month, source I). Moonwalks and the night battery also trade today against later.
-- Maths mistakes never fail a mission.
+- **Live space weather:** at the start of the Final the game asks NASA’s DONKI service for particle storms in the last 30 days. If NASA recorded one, the child plays that storm. If not, or if the check fails, the game uses its stored storms.
+- **Three real 2024 solar storms** from DONKI (9 Feb X3.3, 29 Jan M6.8 and a 12 Feb storm with no flare). The countdown is the real time between NASA’s alert and the storm reaching Earth.
+- **Life-support ratios:** a crew member needs about 3 times more drinking water than oxygen each day; ice mining needs more power than the whole habitat.
+- **Radiation:** the 4-to-1 cabin-versus-shelter ratio from the Artemis I paper, and a “real radiation ruler” built from NASA OSDR RadLab readings (Space Station, Moon orbit, Orion and Curiosity on Mars).
+- **Biology from NASA OSDR:** bone loss in mice on the Space Station (OSD-804) and space-grown lettuce (OSD-267 to 269).
+- **Real photos:** Shackleton Crater from NASA’s Lunar Reconnaissance Orbiter and Curiosity’s selfie on Mars.
+- **Honest numbers:** game points are simplified sizes. Each one is marked as a NASA ratio or an estimate, and children can open “How we made the numbers” in the game. Every value is listed below.
 
 ## Privacy and safety
 
-- No accounts, no ads, no purchases, no leaderboards.
-- Only a nickname is stored, in the browser's own storage on that device.
-- Sounds are made in the browser and only play after a tap. There is a mute button on the Moon Map.
-- **Two kinds of network request, both to NASA, neither carrying anything about the child:** at the start of the Final the game asks NASA's public DONKI service for particle storms in the last 30 days (a date range only). If it fails or is slow (5 s), the game carries on with its stored storms. To use your own NASA key instead of `DEMO_KEY`, set `VITE_NASA_API_KEY` in Vercel. The two NASA photos load from `public/assets/` if you add them, otherwise from NASA's servers; if neither loads, they are simply hidden. To bundle them: save https://svs.gsfc.nasa.gov/3634/ → `LROC_v03.1000.jpg` as `public/assets/nasa-shackleton-lroc.jpg`, and https://www.jpl.nasa.gov/images/pia22207-mount-sharp-photobombs-curiosity/ → Download JPG as `public/assets/nasa-curiosity-pia22207.jpg`.
-- Read-aloud uses the device's own speech voice and sends nothing.
-- Animations turn off when the device asks for reduced motion.
+- No accounts, ads, purchases, chat or leaderboards.
+- Only a nickname is saved, in the browser on that device.
+- The only network requests go to NASA (the DONKI check, with a date range only, and the NASA photos). Nothing about the child is sent.
+- Sounds only play after a tap, with a mute button on the Moon Map.
 
-## Notes for the Space Apps submission
+## For teachers and parents
 
-- The character images in `public/assets` are AI-generated and now carry a visible "AI-generated" watermark. The submission guide also asks you to name the AI tools in your project description.
-- All game points are simplified sizes. The game explains which come from NASA ratios and which are estimates (reward screens and the Commander Log → "How we made the numbers").
-- Do not use the NASA logo. Use the NASA Space Apps Challenge branding instead.
+The **“For grown-ups and teachers”** page (on the Moon Map) explains what each mission teaches, how to use the game in class and three discussion questions. The **“Real NASA data we used”** page lists every dataset with links.
 
-## What changed in this version
+## Credits and AI use
 
-**v5: side quests and pre-deployment fixes**
-- **Fixes:** storm practice is now optional, shown only the first time, and neutral (it describes each spot without nudging toward the shelter). The battery-math quiz is for Explorer level only; Commanders get an optional "Check my battery math" button. Wording fixes: the Artemis I 414/95 numbers are now called a computer simulation of the October 1989 storm, the bone card says scientists are still studying Moon gravity, the lettuce card names China's Tiangong II, and the oxygen value names the HIDH "Total Per Day" row. The Moon Map now has a main heading for screen readers.
-- **Six optional side quests** (they read the same game engine and never change a rule, a number, official stars or the saved base):
-  - ☀️ **Scan the Sun** (Final and Mars Mode): tap the telescope to see the real NASA DONKI record behind the mission, with its event date, when the data was checked, and a "Recent data" or "Archived practice" badge. The mission clock pauses.
-  - 🛡️ **Shelter versus science** (sunny round of the Final and Mars Mode): one panel for the same two machines, with energy flowing into the one you power and the cells it costs.
-  - 👻 **What if? Try the other choice** (after the storm): your plan beside the other choice, worked out from the same start with the same rules, with bold green gains and red losses.
-  - 🌗 **New mission day** (end of the Final): "Try this challenge again" or "Explore a new mission day", which uses another stored DONKI storm and the other darkness variant as a practice run.
-  - ⏪ **Engineer's rewind** (after a round with no smart-choice star, or after an abort that wasn't the clock): back to the same decision with your choices still set, then a first-try / now table.
-  - 📒 **My Strategy Collection** (Commander Log): 12 illustrated strategy cards; each opens the child's actual before-and-after result.
-- New browser storage key: `lkq-strategies-v1` (strategy cards only). `npm test` now also runs `scripts/side-quest-test.mjs`.
+- Game design, writing and development: Maryam.
+- NASA data and images: see the sources below. Images are credited to NASA/GSFC/Arizona State University (LROC) and NASA/JPL-Caltech/MSSS (Curiosity).
+- The crew and commander character images are AI-generated and carry a visible “AI-generated” label.
+- No NASA logo is used. This is a NASA Space Apps Challenge project, not an official NASA product.
 
-**Latest update (pre-deployment check against the full challenge text):**
-- **OSDR biology findings:** Mission 2's bone card now uses OSDR study OSD-804 (mice on the Space Station for 37 days lost bone in weight-bearing legs but not spines; ground mice that could climb kept bone; Cahill et al., PLOS ONE 2025). Mission 3's first card uses the Veggie lettuce studies OSD-267 to 269 (safe to eat) and NASA's OSDR analysis (about 30% less calcium and 25% less magnesium than Earth lettuce).
-- **Mission 1: 3 meters + battery.** Power is now a battery bar under the meters (like the battery card in every other mission), so Mission 1 shows Oxygen, Water and Shield as meters.
-- **NASA photos bundled:** `public/assets/nasa-shackleton-lroc.jpg` and `public/assets/nasa-curiosity-pia22207.jpg` (resized to 1200 px), so both photos work offline.
-- **Communications use power:** a "Radio to Earth" switch (1 cell) in every power round of Missions 2, 3, the Final and Mars Mode. Mission Control can only be called when the radio is on (in an action round: when it was on the round before). Power is now split between life support, communications and science, as the challenge describes.
-- **Reinforce the shelter BEFORE the storm:** "Reinforce storm shelter" (2 cells) in the sunny round of the Final and Mars Mode. It costs cells you might want for the dark, and gives +1 Shield back when the storm hits.
-- **Real Mars photo:** Curiosity's "Mount Sharp photobombs Curiosity" selfie (PIA22207, NASA/JPL-Caltech/MSSS) on the Mars radiation card and the data page.
-- **Sol:** Mars Mode rounds are "Sol 1: dusty day / storm / freezing night", and "sol" is a tap-to-explain word (about 24.6 hours, NASA Mars facts). Mars Mode now has red ground and no Earth in the sky.
-- **AI watermark:** every AI-generated crew image (12 files in `public/assets`) now carries a visible "AI-generated" (or "AI" on the small walking sprites) label burned into the picture. Unmarked originals are not in this zip.
-- **Tap-to-explain fix:** words only match whole words (so "sol" never lights up inside "solar").
+## For developers
 
-**Previous update (final evaluation: accessibility, real data, pitfalls, stand-out):**
-- **No free safe win:** in every mission the 3rd star needs the bonus goal. In the Final, hiding all mission and doing no science now gets at most 2 stars (the balance test checks every plan).
-- **Fewer things to track:** each mission shows at most 3 meters plus a score (Mission 1: Power, Oxygen, Water, Shield; Final and Mars: Oxygen, Food, Shield + Science). Warmth is gone: the Heater is a life-support switch that must run in the dark, or the crew gets too cold (mission abort). Food starts in Mission 3.
-- **Read-aloud** on every Chandu message, briefing and NASA card (the browser's own voice: offline, sends nothing).
-- **Tap-to-explain words:** radiation, radiation dose, particle storm, solar flare, cloud from the Sun (CME), weightlessness, gravity, speed of light, life support, Moon dirt, calories, kilowatts, μGy, Mission Control.
-- **Plain language:** no "MeV"; flare sizes explained; storm times in Pakistan time (UTC+5); long NASA cards show about 40 words first, with "Read more".
-- **Bigger text** (nothing under 13 px) and a main heading on every mission screen. Automated accessibility checks (axe-core) find no issues on 8 screens.
-- **Big-screen layout:** on a laptop or projector, missions show the Moon scene on the left and the controls on the right.
-- **"Real data we used"** page (from the Welcome screen and the Moon Map): every dataset, live vs stored vs ratio vs estimate, with links.
-- **"For grown-ups and teachers"** page: what each mission teaches, levels for older siblings and parents, classroom use, 3 discussion questions, privacy.
-- **Real radiation ruler (all μGy per hour, from RadLab unless noted):** Space Station 2–12.6; Curiosity on Mars 4.8–6.9; Moon orbit calm 6.9–7.8 and storm peak 1,453 (LRO CRaTER, 24–26 Feb 2023: about 200 times calm); inside Orion on the real Artemis I flight about 17 (15–23; 4,122 for a few minutes crossing Earth's radiation belts after launch); NASA's big-storm calculation for Orion (shelter 5,700, open cabin 24,840). Opens from the storm result and the data page.
-- **Storm card corrected:** the February 2023 storm is now shown with real lunar-orbit readings (about 7 → about 1,450 μGy per hour) instead of a value read off a chart. RadLab has no Moon-surface instrument, so the Chang'e 4 lander is no longer mentioned.
-- **Real NASA photo:** Shackleton Crater from the Lunar Reconnaissance Orbiter camera on the Mission 1 card and the data page (credit NASA/GSFC/Arizona State University).
-- **Live data changes the game:** if DONKI has a particle storm from the last 30 days, the Final plays that storm ("NASA found this storm 12 days ago"). The storm card ends with "Right now: …" from the live check.
-- **Notebook keeps source links** for every saved fact.
-- **Mars Mode** (unlocks after the Final): Mission Control's reply takes 6 to 44 minutes, so it arrives after the storm. Kids decide alone. Uses DONKI's forecast that the 9 Feb 2024 Sun cloud would reach Mars, and Curiosity's radiation readings.
-- **Replay variety:** the Final alternates between a south-pole dark spell (about 4 days) and a full Moon night (nearly 15 days, battery charge needed), plus the rotating real storms. After 3 stars, "Can you win a different way?" challenges.
+Built with React 19 and Vite 7. No backend.
 
-**Previous update (real NASA data, radio delay, trade-offs):**
-- **Communication delay:** Mission Control replies after a real Moon radio delay while the clock runs (sources N, O); new "Calling Earth takes time" card with the Mars comparison.
-- **Real DONKI storms:** three verified 2024 storms with their real alert and arrival times drive the storm countdown; each storm's NASA card links to the DONKI alert and event pages. Lessons from DONKI: a CME that missed Earth still sent particles; a storm with no flare at all; a storm that took 2 days; a big X6.3 flare with no storm.
-- **Live DONKI check (optional):** the Final shows how many particle storms NASA recorded in the last 30 days, with a stored fallback. (On 15 Nov 2026 the answer was none, "a quiet Sun".)
-- **Video call → Exercise bike** (Mission 2): the free mood boost is replaced by exercise that costs power and protects Fitness, based on NASA's 1–1.5% bone loss per month in weightlessness (source P; NASA does not know yet how much Moon gravity helps, so the amount is an estimate).
-- **Storm is a real trade-off:** outside gives more science than behind the wall, so the wall is no longer a free win. Leaving crew outside caps the mission at 2 stars.
-- **New trade-offs in the Final:** a Moonwalk for samples (science for stored oxygen and a little Shield) and Repair storm shelter in the dark (Shield vs food vs warmth).
-- **Delayed consequence (Mission 3):** plant lamps' food arrives a month later; the Base Report says what last month's choice grew.
-- **Mission 3 bonus goal counts food you GROW:** "Grow at least 2 more Food than you started with" (it used to be "finish with Food 6 or more", which a base carrying in lots of food could win without lighting a single lamp). Fresh-start water is 8 so a new player can still light lamps and water plants safely. The balance test now checks that no 3-star plan skips the lamps.
-- **Food card** (CSA, source Q): 3 meals + 1 snack, 1,900–3,200 calories a day.
-- **Fixed:** the RadLab card now says the >10× jump was at the Moon's surface (Chang'e 4) and adds that Curiosity on Mars saw no jump on the same days (checked against RadLab MSL-RAD data for 24–27 Feb 2023: steady, 4.8–6.9). Mission 3 no longer shows a Happy meter that never changed.
+```bash
+npm install
+npm run dev      # play locally at the address it prints
+npm test         # science-data checks, side quests, visual learning and game balance
+npm run build    # production build in dist/
+```
 
-**Previous update (hands-on play and real storm data):**
-- **Solar storm is now an action:** tap each astronaut to move them into the shelter or behind the Moon-dirt wall before the countdown ends.
-- **Thirsty plants is now an action:** tap a watering can on each plant.
-- **No more quiz steps:** the maths question and the end-of-mission question are gone. They are replaced by the Base Report (from the design canvas) and a bonus-goal star.
-- **NASA ratio:** the outside-vs-shelter storm ratio is now 4 to 1, from Artemis I measurements (NASA/DLR/ESA, Nature 2024).
-- **New "A real storm" card:** it uses a DONKI event (X3.3 flare on 9 Feb 2024 at 12:53 UTC, particle storm detected at 15:09) and NASA OSDR RadLab data (Feb 2023 storm: radiation at the Moon's surface jumped more than 10 times above normal for about a day).
-- **New "Shelters really work" card,** from Artemis I.
-
-**Earlier update:**
-
-- **One persistent outpost:** each mission starts from the base the child built; the site, wall, tank and greenhouse carry forward and show in a "Your base" strip.
-- **Mission 1 matches NASA:**
-  - 9 Artemis III landing regions (not 13);
-  - the sunny-rim-plus-icy-crater plan is the 3-star strategy;
-  - new Ice miner and Moon-dirt wall;
-  - the completion screen says which home NASA would pick and why.
-- **Ice miner** (Missions 1 and 2): the biggest power user, sunlight only.
-- **Radiation matters:** Shield is life support in the Final. The storm has a countdown and three choices (shelter, Moon-dirt wall, outside), and too much radiation aborts the mission.
-- **Food matters:** the crew eats every day, food is life support in the Final, and plants give back a little oxygen.
-- **"A Moon Stay"** replaces "One Day on the Moon". It has 4 rounds (sunny work, solar storm, long dark spell, sunrise) with Oxygen, Food, Shield and Warmth all at stake together.
-- **Every number** comes from `ratios.js`, marked NASA ratio or estimate.
-- **Guiding questions** replace answer-giving hints, and the pink "required" outlines are gone.
-- **NASA cards** were rewritten to use only the sourced facts below.
+- `src/data/` holds every number, mission and NASA source (`ratios.js` is the single source of game values).
+- `src/lib/missionLogic.js` holds the game rules; the side quests only read it.
+- `scripts/balance-test.mjs` plays every possible strategy in every mission to check that each one can be won and that the 3-star plans keep the crew safe.
+- An optional NASA API key can be set as `VITE_NASA_API_KEY`; without one the game uses NASA’s `DEMO_KEY`.
 
 ## Game values: NASA ratios and estimates
 
@@ -211,7 +110,7 @@ Generated from `src/data/ratios.js`. Letters refer to the sources below.
 | Oxygen the crew breathes each day | SMALL | 2 | **NASA ratio** (D1) | About 0.82 kg of oxygen per astronaut per day. Water is about 3 times more, so Water drain is 3 times Oxygen drain. |
 | Water the crew drinks each day | HUGE | 6 | **NASA ratio** (D2) | About 2.79 kg of drinking water per astronaut per day: about 3 times the oxygen. |
 | Food the crew eats each day | SMALL | 2 | Estimate | Our NASA sources give no food amount per day. Kept small so a garden can keep up with it. |
-| Fitness lost each day without exercise | TINY | 1 | Estimate (P) | In weightlessness, astronauts lose about 1 to 1.5% of bone each month (P). NASA does not know yet how much Moon gravity (1/6 of Earth’s) slows this, so the amount is a game value. |
+| Fitness lost each day without exercise | TINY | 1 | Estimate (P) | In weightlessness, astronauts lose about 1 to 1.5% of bone each month (P). Scientists are still studying how much Moon gravity (1/6 of Earth’s) slows this, so the amount is a game value. |
 | Ice miner | HUGE | 6 | **NASA ratio** (B) | Ice mining is the biggest power user (60+ kW), more than the whole habitat (20–50 kW). |
 | One rover trip | TINY | 1 | **NASA ratio** (B) | A rover uses about 500 W, only 1–2.5% of the habitat’s 20–50 kW. |
 | Oxygen maker | MEDIUM | 3 | Estimate (B) | Life support is the top priority load (B), but NASA has not published its share of habitat power. |
@@ -242,7 +141,7 @@ Generated from `src/data/ratios.js`. Letters refer to the sources below.
 | Science from the lab or drill | MEDIUM | 3 | Estimate | Score only. |
 | Fitness from the exercise bike | SMALL | 2 | Estimate (P) | Exercise slows bone loss in space (P). The amount is a game value. |
 | Water from one rover ice trip | SMALL | 2 | Estimate | Not a NASA number. |
-| Shield lost if the whole crew stays outside in a solar storm | LARGE | 4 | **NASA ratio** (K) | Artemis I: for a big solar storm, the peak dose in Orion’s crew cabin was about 4 times the storm shelter’s (414 vs 95 µGy per minute). Measured inside a spacecraft, not on the Moon’s surface. |
+| Shield lost if the whole crew stays outside in a solar storm | LARGE | 4 | **NASA ratio** (K) | Artemis I paper: for a big solar storm, the peak dose in Orion’s crew cabin was about 4 times the storm shelter’s (414 vs 95 µGy per minute). Worked out with a computer simulation of the huge October 1989 solar storm (not measured during the flight); inside a spacecraft, not on the Moon’s surface. |
 | Shield lost if the whole crew is in the shelter | TINY | 1 | **NASA ratio** (K) | The other half of the Artemis I 4-to-1 ratio: the shelter gets about a quarter of the cabin’s dose. |
 | Shield lost if the whole crew works behind a Moon-dirt wall | SMALL | 2 | Estimate (G) | NASA is testing regolith walls against radiation (G), but has no dose number yet. Kept between outside and shelter. |
 | Science from each astronaut who keeps working OUTSIDE in the storm | SMALL | 2 | Estimate | Score only. Outside is where the samples are, so it gives the most science. If nobody works, science goes down by a TINY amount. |
@@ -281,7 +180,7 @@ Generated from `src/data/ratios.js`. Letters refer to the sources below.
 - **J.** Space Station life support and water recovery:
   https://www.nasa.gov/wp-content/uploads/2025/08/g-657270-59-hp-environmental-control-and-life-support-system-eclss.pdf
   and https://www.nasa.gov/missions/station/iss-research/nasa-achieves-water-recovery-milestone-on-international-space-station/
-- **K.** Space radiation measurements during the Artemis I lunar mission (George et al., Nature 2024; NASA, DLR, ESA). Crew cabin vs storm shelter: 414 vs 95 µGy/min peak for a modelled large solar storm. Accepted manuscript: https://www.osti.gov/pages/servlets/purl/2447574
+- **K.** Space radiation measurements during the Artemis I lunar mission (George et al., Nature 2024; NASA, DLR, ESA). Crew cabin vs storm shelter: 414 vs 95 µGy/min peak, worked out with a computer simulation of the huge October 1989 solar storm (not measured during the flight). Accepted manuscript: https://www.osti.gov/pages/servlets/purl/2447574
 - **L.** NASA CCMC DONKI, Solar Energetic Particle event of 9 Feb 2024 (linked to an X3.3 flare at 12:53 UTC): https://kauai.ccmc.gsfc.nasa.gov/DONKI/view/SEP/29076/3. Every storm time in `src/data/storms.js` was copied from DONKI API responses (FLR, SEP, CME and notifications, Jan–Feb 2024), and each storm card links to its DONKI pages. Times are UTC. "Near Earth" = GOES >10 MeV threshold.
 - **T.** NASA Scientific Visualization Studio: Shackleton's rim through the eyes of LRO/LROC (a real LRO Narrow Angle Camera mosaic of Shackleton Crater; credit NASA/GSFC/Arizona State University): https://svs.gsfc.nasa.gov/3634/
 - **W.** NASA OSDR OSD-804 (Rodent Research-1 bone): https://osdr.nasa.gov/bio/repo/data/studies/OSD-804 ; paper: https://doi.org/10.1371/journal.pone.0317307
