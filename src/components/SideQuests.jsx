@@ -63,7 +63,6 @@ export function StormPrep({ items, on, free, onToggle }) {
         <span className="prep-picture" aria-hidden="true"><MachineDrawing kind={p.kind} running={!!on[p.it.id]} compact /></span>
         <b>{p.label}</b>
         <span className="chip-info"><strong>🔋 {p.it.cost} cells</strong></span>
-        <span className="chip-info"><strong>{p.gets}</strong></span>
       </button>)}
     </div>
     <p role="status" className="prep-note">{chosen.length === 0 ? 'Cells you spend here cannot power anything else.'

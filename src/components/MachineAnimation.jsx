@@ -53,8 +53,6 @@ export default function MachineAnimation({ item, kind, running = false, showEffe
     {type === 'garden' && <small className="flash-caption">Simulated stages · food comes at the mission’s harvest</small>}
     {item && showEffects && <div className="machine-effects" aria-label="What this machine does">
       {item.cost > 0 && <span className="chip-info">🔋 Uses {item.cost} {item.cost === 1 ? 'cell' : 'cells'}</span>}
-      {effectWords(item.eff || {}).map((x) => <span className="chip-info" key={x.key}>{x.icon} {x.text}</span>)}
-      {effectWords(item.laterEff || {}).map((x) => <span className="chip-info" key={'l' + x.key}>⏳ {x.icon} {x.text} later</span>)}
     </div>}
     {showEffects && item && <small className="equipment-units">You will see the real changes after the round.</small>}
 
