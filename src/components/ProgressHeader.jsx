@@ -9,7 +9,7 @@ export default function ProgressHeader({ title, steps = [], onBack, backLabel = 
   const hurry = clock && clock.seconds <= 30 && clock.active;
   return (
     <div style={{ flex: 'none', padding: '12px 14px 8px', display: 'flex', alignItems: 'center', gap: 8 }}>
-      <button type="button" className="btn btn-back" style={{ width: 46, height: 46 }} aria-label={backLabel} onClick={onBack}>
+      <button type="button" className="btn btn-back header-back" style={{ width: 46, height: 46 }} aria-label={backLabel} onClick={onBack}>
         <Icon name="back" size={24} stroke={3} />
       </button>
       <div style={{ flex: '1 1 0', minWidth: 0, display: 'flex', flexDirection: 'column', gap: 5 }}>
