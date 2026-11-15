@@ -1,0 +1,19 @@
+Lunar Kids Quest V4
+
+Install Node.js, then open a terminal in this folder:
+  npm install
+  npm run dev
+
+Open the localhost address printed by Vite.
+
+To serve the included production build:
+  npm run preview
+
+Run all tests:
+  npm test
+
+Latest implementation and test notes: docs/V4-VISUAL-UPDATE.md
+Child playtest protocol: docs/CHILD-PLAYTEST.md
+
+The dist folder contains the production website files for static hosting.
+Use a web server rather than double-clicking dist/index.html.

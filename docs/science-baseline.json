@@ -1,0 +1,154 @@
+{
+  "captured": "2026-11-15",
+  "files": {
+    "src/data/datasets.js": {
+      "sha256": "34713434ed8bbd40d078c64e3f715c5496bd5be73eb21d7ec9f9daeee965e0ed",
+      "urls": []
+    },
+    "src/data/glossary.js": {
+      "sha256": "a9ed6387f3dfa8a75275c64dbe669846e4ca9692cf4a43ec7528a81bef7f7e85",
+      "urls": []
+    },
+    "src/data/mission1.js": {
+      "sha256": "f3d9ff663a4da8fdb1c0a0fb1f187a47551806d68018ace9b9314f8e33984d89",
+      "urls": [
+        "https://www.nasa.gov/missions/apollo/apollo-13-mission-details/"
+      ]
+    },
+    "src/data/missions.js": {
+      "sha256": "2ccdba906c030e3f96cb3a74d560fe63dcc5b317d716a303b7a21080f3b03aa0",
+      "urls": [
+        "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/29066/-1"
+      ]
+    },
+    "src/data/radiation.js": {
+      "sha256": "cdde27b5d0e2a5bbcd2f3248fd7c92c7829e5274f83135720f63e973a63ffe3a",
+      "urls": [
+        "https://visualization.osdr.nasa.gov/radlab/kb/absorbed_dose_rate",
+        "https://visualization.osdr.nasa.gov/radlab",
+        "https://www.osti.gov/pages/servlets/purl/2447574"
+      ]
+    },
+    "src/data/ratios.js": {
+      "sha256": "695cd5198a3d051f0efe2ef4fc5174a7a11a997e90cf99948f01328532c060fa",
+      "urls": [
+        "https://www.nasa.gov/?p=748006",
+        "https://www.nasa.gov/lunar-surface-technology/",
+        "https://www.nasa.gov/?p=841628",
+        "https://ntrs.nasa.gov/api/citations/20220002294/downloads/ICES-2022-388%20final%20for%20Strives.pdf",
+        "https://science.nasa.gov/sun/solar-storms-and-flares/",
+        "https://www.nasa.gov/general/artemis-ii-crew-both-subjects-and-scientists-in-nasa-deep-space-research/",
+        "https://www.nasa.gov/radiation-protection/",
+        "https://www.nasa.gov/missions/station/iss-research/space-gardens/",
+        "https://www.nasa.gov/science-research/seed-film-brings-new-way-to-grow-plants-in-space/",
+        "https://www.nasa.gov/wp-content/uploads/2025/08/g-657270-59-hp-environmental-control-and-life-support-system-eclss.pdf",
+        "https://www.nasa.gov/missions/station/iss-research/nasa-achieves-water-recovery-milestone-on-international-space-station/",
+        "https://www.osti.gov/pages/servlets/purl/2447574",
+        "https://kauai.ccmc.gsfc.nasa.gov/DONKI/view/SEP/29076/3",
+        "https://visualization.osdr.nasa.gov/radlab",
+        "https://asc-csa.gc.ca/eng/multimedia/search/image/17245",
+        "https://ntrs.nasa.gov/citations/20250000703",
+        "https://www.nasa.gov/reference/risk-of-spaceflight-induced-bone-changes/",
+        "https://www.asc-csa.gc.ca/eng/astronauts/living-in-space/eating-in-space.asp",
+        "https://ccmc.gsfc.nasa.gov/DONKI/",
+        "https://svs.gsfc.nasa.gov/3634/",
+        "https://osdr.nasa.gov/bio/repo/data/studies/OSD-804",
+        "https://doi.org/10.1371/journal.pone.0317307",
+        "https://osdr.nasa.gov/bio/repo/data/studies/OSD-267",
+        "https://science.nasa.gov/science-research/biological-physical-sciences/lettuce-find-healthy-space-food-citizen-scientists-study-space-salads/",
+        "https://science.nasa.gov/mars/facts/",
+        "https://www.jpl.nasa.gov/images/pia22207-mount-sharp-photobombs-curiosity/"
+      ]
+    },
+    "src/data/storms.js": {
+      "sha256": "f16bcf3b1150384dcac8f4ab19a4a8fac63f13cbcc8d422008ed6742ec7881c5",
+      "urls": [
+        "https://ccmc.gsfc.nasa.gov/DONKI/view",
+        "https://api.nasa.gov/DONKI/SEP?startDate=${ymd(start",
+        "https://ccmc.gsfc.nasa.gov/DONKI-API/get/SEP?startDate=${ymd(start",
+        "https://ccmc.gsfc.nasa.gov/DONKI/"
+      ]
+    },
+    "src/lib/missionLogic.js": {
+      "sha256": "09763fdb17499afb61d91c1e02f2d30f69a9a198436692547ccaf679c201a6c2",
+      "urls": []
+    },
+    "src/lib/mission1Logic.js": {
+      "sha256": "738738a4fde18c4634b32d47ed6811caf9d9ee33485de7194e2f163bbdedf53e",
+      "urls": []
+    },
+    "src/lib/radio.js": {
+      "sha256": "23ff034c976c8bbfa258d50155f30f1c8af1711a9d70a66a0eaf868949f5a892",
+      "urls": []
+    },
+    "README.md": {
+      "sha256": "9bb0b19f9076595e13f2146d5d0d65217ef6bf21160d7da1061282fd51d3d591",
+      "urls": [
+        "https://nodejs.org",
+        "http://localhost:5173",
+        "https://svs.gsfc.nasa.gov/3634/",
+        "https://www.jpl.nasa.gov/images/pia22207-mount-sharp-photobombs-curiosity/",
+        "https://www.nasa.gov/?p=748006",
+        "https://www.nasa.gov/lunar-surface-technology/",
+        "https://www.nasa.gov/?p=841628",
+        "https://ntrs.nasa.gov/api/citations/20220002294/downloads/ICES-2022-388%20final%20for%20Strives.pdf",
+        "https://science.nasa.gov/sun/solar-storms-and-flares/",
+        "https://www.nasa.gov/general/artemis-ii-crew-both-subjects-and-scientists-in-nasa-deep-space-research/",
+        "https://www.nasa.gov/radiation-protection/",
+        "https://www.nasa.gov/missions/station/iss-research/space-gardens/",
+        "https://www.nasa.gov/science-research/seed-film-brings-new-way-to-grow-plants-in-space/",
+        "https://www.nasa.gov/wp-content/uploads/2025/08/g-657270-59-hp-environmental-control-and-life-support-system-eclss.pdf",
+        "https://www.nasa.gov/missions/station/iss-research/nasa-achieves-water-recovery-milestone-on-international-space-station/",
+        "https://www.osti.gov/pages/servlets/purl/2447574",
+        "https://kauai.ccmc.gsfc.nasa.gov/DONKI/view/SEP/29076/3.",
+        "https://osdr.nasa.gov/bio/repo/data/studies/OSD-804",
+        "https://doi.org/10.1371/journal.pone.0317307",
+        "https://osdr.nasa.gov/bio/repo/data/studies/OSD-267",
+        "https://science.nasa.gov/science-research/biological-physical-sciences/lettuce-find-healthy-space-food-citizen-scientists-study-space-salads/",
+        "https://science.nasa.gov/mars/facts/",
+        "https://visualization.osdr.nasa.gov/radlab/kb/absorbed_dose_rate",
+        "https://visualization.osdr.nasa.gov/radlab.",
+        "https://www.nasa.gov/missions/apollo/apollo-13-mission-details/",
+        "https://asc-csa.gc.ca/eng/multimedia/search/image/17245",
+        "https://ntrs.nasa.gov/citations/20250000703",
+        "https://www.nasa.gov/reference/risk-of-spaceflight-induced-bone-changes/",
+        "https://www.asc-csa.gc.ca/eng/astronauts/living-in-space/eating-in-space.asp.",
+        "https://www.asc-csa.gc.ca/eng/youth-educators/toolkits/food-production/",
+        "https://ccmc.gsfc.nasa.gov/DONKI/."
+      ]
+    },
+    "scripts/balance-test.mjs": {
+      "sha256": "0aa8ae29d30a77e7b6d8a3294ad0aa15e8c9130c98710356323c5712ccae6adb",
+      "urls": []
+    }
+  },
+  "citationFiles": {
+    "src/components/NASAFactCard.jsx": [],
+    "src/screens/DataPage.jsx": [],
+    "src/components/NasaPhoto.jsx": [
+      "https://svs.gsfc.nasa.gov/vis/a000000/a003600/a003634/LROC_v03.1000.jpg",
+      "https://svs.gsfc.nasa.gov/3634/",
+      "https://photojournal.jpl.nasa.gov/jpeg/PIA22207.jpg",
+      "https://www.jpl.nasa.gov/images/pia22207-mount-sharp-photobombs-curiosity/"
+    ]
+  },
+  "changes": [
+    {
+      "date": "2026-11-15",
+      "files": [
+        "src/data/datasets.js",
+        "src/data/missions.js",
+        "src/data/radiation.js",
+        "src/data/ratios.js"
+      ],
+      "why": "Intentional source-accuracy wording fixes after re-checking sources: Artemis I 414/95 \u00b5Gy/min labelled as a simulation of the October 1989 storm (not a flight measurement); 'Nobody knows yet' about Moon gravity and bones softened to 'Scientists are still studying' (NASA bone page does not discuss partial gravity); space-lettuce card names both the Space Station and Tiangong II; oxygen source label points to the HIDH 'Total Per Day' row. No game number, ratio, formula or URL changed."
+    },
+    {
+      "date": "2026-11-15",
+      "files": [
+        "README.md"
+      ],
+      "why": "v5: added a 'v5: side quests and pre-deployment fixes' section at the top of 'What changed in this version'. No NASA number, formula, source text or URL in the README changed."
+    }
+  ]
+}
