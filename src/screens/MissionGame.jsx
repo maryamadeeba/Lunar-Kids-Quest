@@ -201,7 +201,7 @@ function MissionRun({ mission: C, onReplay, onNewDay, initialBase, practice, pre
     return () => { alive = false; };
   }, [storm]);
   const [startRes] = useState(() => startFor(C, base));
-  const fresh = { toast: null, on: {}, sel: null, cd: null, warned: false, lastD: {}, crew: { amina: 'out', bilal: 'out', zoya: 'out' }, watered: [false, false, false] };
+  const fresh = { toast: null, on: {}, sel: null, cd: null, warned: false, warnedPlan: null, lastD: {}, crew: { amina: 'out', bilal: 'out', zoya: 'out' }, watered: [false, false, false] };
   const [s, setS] = useState({
     ...fresh, phase: 'intro', r: 0, res: { ...startRes }, before: null, mistake: false, lifeSlip: false, log: [], card: null, showNumbers: false,
     nasaOpen: false, picks: [], ons: [], earned: 0, toast: null, failWhy: null, houstonUsed: false,
@@ -265,7 +265,24 @@ function MissionRun({ mission: C, onReplay, onNewDay, initialBase, practice, pre
     set({ on, warned: false, mood: 'happy', msg: on[it.id] ? `${it.name} is on! ${cellWord(cells - cellsUsed(rd, on))} left.` : `${it.name} is off.` });
   };
 
+  // Choices show no numbers, so warn once if a plan would empty a life-support supply.
+  const runsOut = (pick) => {
+    const after = previewRound(C.rounds, rd, s.res, pick, s.ons);
+    return (C.essentials || []).filter((k) => after[k] <= 0);
+  };
+  const outWarning = (pick) => {
+    const out = runsOut(pick);
+    const key = JSON.stringify(pick);
+    if (!out.length || s.warnedPlan === key) return false;
+    playSound('oops');
+    const hint = out[0] === 'w' ? 'Is something that saves or makes water switched on? Do the plants need all that water?'
+      : out[0] === 'o' ? 'Is the Oxygen maker on?' : out[0] === 'f' ? 'Food comes from the greenhouse and plant lamps.'
+        : out[0] === 'h' ? 'The Heater keeps the crew warm in the dark.' : out[0] === 's' ? 'The shelter keeps the crew safe from radiation.' : 'Try a different plan.';
+    set({ warnedPlan: key, mood: 'worry', msg: `Careful, Commander! With this plan the crew will run out of ${resourceName(out[0])}. ${hint} Press again to go anyway.` });
+    return true;
+  };
   const powerGo = () => {
+    if (outWarning(s.on)) return;
     const missing = lifeOff(rd, s.on, base, C.key);
     if (missing.length && !s.warned) {
       playSound('oops');
@@ -573,7 +590,7 @@ function MissionRun({ mission: C, onReplay, onNewDay, initialBase, practice, pre
               ))}
             </div>
 
-            <button type="button" className="btn btn-yellow" style={{ marginTop: 'auto', height: 58, fontSize: 22 }} onClick={() => runRound()}>Done watering</button>
+            <button type="button" className="btn btn-yellow" style={{ marginTop: 'auto', height: 58, fontSize: 22 }} onClick={() => { if (outWarning(actionPick(rd, s))) return; runRound(); }}>Done watering</button>
           </div>
         )}
 
@@ -584,7 +601,7 @@ function MissionRun({ mission: C, onReplay, onNewDay, initialBase, practice, pre
                 onClick={() => { playSound('pick'); set({ sel: o.id, mood: 'think', msg: `${o.title}? Tap Do it! to see what happens.` }); }} />;
             })}
             <button type="button" className="btn btn-yellow" style={{ marginTop: 'auto', height: 58, fontSize: 22 }}
-              onClick={() => { if (!s.sel) { playSound('oops'); set({ mood: 'happy', msg: 'Tap a plan first!' }); return; } runRound(); }}>Do it!</button>
+              onClick={() => { if (!s.sel) { playSound('oops'); set({ mood: 'happy', msg: 'Tap a plan first!' }); return; } if (outWarning(s.sel)) return; runRound(); }}>Do it!</button>
           </div>
         )}
 
