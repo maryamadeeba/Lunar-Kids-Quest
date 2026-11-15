@@ -44,6 +44,7 @@ import RadiationRuler from '../components/RadiationRuler.jsx';
 import Sheet from '../components/Sheet.jsx';
 import { playSound } from '../lib/sound.js';
 import { ConsequenceReveal, StormPractice } from '../components/LearningLab.jsx';
+import TradeoffPicture from '../components/TradeoffPicture.jsx';
 import { TelescopeButton, SunScan, StormPrep, GhostReplay, RewindCompare, StrategyToasts } from '../components/SideQuests.jsx';
 import { recordStrategy, strategiesFor, ghostReplay, sunScanCard } from '../lib/sideQuests.js';
 import { LESSONS, childText, commitOfficialRun, previewRound, explainTransition, discoveries, recordLearning, contextualHint } from '../lib/learning.js';
@@ -103,13 +104,16 @@ function logEntry(C, rd, pick, cells, items, harvest = {}) {
     const used = cellsUsed(rd, pick);
     const offNames = listWords(off.map((x) => x.name));
     const sideTxt = chips(side, keys).cost;
-    let tip = `${rd.title}: you switched on ${on.length ? listWords(on.map((x) => x.name)) : 'nothing'}. We got ${got}.`;
-    tip += off.length ? ` The trade-off: that used ${used} of our ${cells} cells, so ${offNames} had to stay off.` : ` It used ${used} of our ${cells} cells.`;
-    if (sideTxt) tip += ` Making things also cost us ${sideTxt}.`;
+    const shortOff = off.length > 2 ? `${off.slice(0, 2).map((x) => x.name).join(', ')} and ${off.length - 2} more` : offNames;
+    const more = listWords(Object.keys(gain).map((k) => resourceName(k)));
+    let tip = on.length ? `You powered the ${listWords(on.map((x) => x.name))}${more ? ` and got more ${more}` : ''}.` : 'You kept every machine off to save the battery.';
+    tip += off.length ? ` They used ${used} of ${cells} battery cells, so ${off.length === 1 ? `the ${offNames} had` : `${off.length} other machines had`} to wait.` : ` They used ${used} of ${cells} battery cells.`;
+    tip += ' A cell spent on one machine can’t run another!';
     const first = on[0] || items[0];
     return {
       icon: first.icon, iconBg: first.color, title: `${rd.title}: ${on.length ? on.map((x) => x.name).join(', ') : 'nothing on'}`,
-      got, gave: [`${used} of ${cells} cells`, off.length ? `${offNames} off` : ''].filter(Boolean).join(', '), tip,
+      got, gave: [`${used} of ${cells} cells`, off.length ? `${off.length} ${off.length === 1 ? 'machine' : 'machines'} off` : ''].filter(Boolean).join(' · '), tip,
+      visual: { machines: { on: on.map((x) => ({ name: x.name, icon: x.icon, color: x.color })), off: off.map((x) => ({ name: x.name, icon: x.icon })) }, cells: { used, total: cells } },
     };
   }
   const eff = actionEffect(rd, pick);
@@ -124,13 +128,14 @@ function logEntry(C, rd, pick, cells, items, harvest = {}) {
     return {
       icon: ICONS.shelter, iconBg: '#D7F0FF', title: `Solar storm: ${listWords(where)}`,
       got: workers ? `+${eff.c} Science` : 'crew kept safe', gave: workers ? `${-eff.s} Radiation safety` : `${-eff.s} Radiation safety and science time`, tip,
+      visual: { crew: { shelter: pick.shelter, wall: pick.wall, out: pick.out }, words: workers ? [] : [{ text: 'Crew stayed safe', good: true }, { text: 'Science stopped while they waited', good: false }] },
     };
   }
   const n = pick.n;
   const crop = harvest.f || 0;
   const cropTxt = crop ? `First, the lamps you lit a month ago gave us ${crop} Food. ` : 'No lamps were lit a month ago, so there was no lettuce to pick. ';
   return {
-    icon: ICONS.plant, iconBg: '#C8F5C2', title: `Watered ${n} of 3 thirsty plants`,
+    icon: ICONS.plant, iconBg: '#C8F5C2', title: `Watered ${n} of 3 thirsty plants`, visual: { plants: { n, of: 3 } },
     got: n ? `+${eff.f} Food` : 'water saved for the crew', gave: n ? `${-eff.w} Water` : `${-eff.f} Food (plants wilted)`,
     tip: cropTxt + (n ? `You watered ${n} thirsty ${n === 1 ? 'plant' : 'plants'}. They grew ${eff.f} more Food, but drank ${-eff.w} Water that the crew could have used.`
       : `You saved all the water for the crew. The crew stayed safe, but the thirsty plants wilted and we lost ${-eff.f} Food.`),
@@ -296,7 +301,7 @@ function MissionRun({ mission: C, onReplay, onNewDay, initialBase, practice, pre
     const log = s.log.slice();
     const entry = logEntry(C, rd, pick, cells, items, harvest);
     const actual = chips(diff(s.res, after), C.meters);
-    log[s.r] = { ...entry, got: actual.gain || 'no net meter gain',
+    log[s.r] = { ...entry, story: entry.tip, visual: { ...(entry.visual || {}), deltas: diff(s.res, after) }, got: actual.gain || 'no net meter gain',
       tip: `${entry.title}. ${explainTransition(s.res, after, rd.type === 'power' ? cellsUsed(rd, pick) : 0)} ${entry.gave ? 'We gave up: ' + entry.gave + '.' : ''} Includes crew use, any harvest, and meter limits.` };
     const offNow = lifeOff(rd, rd.type === 'power' ? s.on : {}, base, C.key);
     playSound('click');
@@ -504,7 +509,8 @@ function MissionRun({ mission: C, onReplay, onNewDay, initialBase, practice, pre
         {practice && <div className="pill" style={{ background: '#e9f5ff', height: 'auto', padding: 10 }}>🧪 Another plan · official progress is safe</div>}
         {s.phase === 'result' && (s.newDiscoveries || []).map(id => <div className="discovery" role="status" key={id}>✦ New discovery: <b>{LESSONS[id].title}</b></div>)}
         {s.phase === 'result' && <StrategyToasts ids={s.newStrategies} />}
-        {s.phase === 'result' && <ConsequenceReveal before={s.before} after={s.res} cells={rd.type === 'power' ? usedN : 0} />}
+        {s.phase === 'result' && rd.type === 'action' && <section className="learning-card"><div className="learning-eyebrow">WHAT YOU DID</div><TradeoffPicture v={{ ...(s.log[s.r]?.visual || {}), deltas: {} }} /></section>}
+        {s.phase === 'result' && <ConsequenceReveal before={s.before} after={s.res} cells={rd.type === 'power' ? usedN : 0} total={rd.type === 'power' ? cells : 0} />}
         {s.phase === 'result' && s.rewindFrom && <RewindCompare first={s.rewindFrom} now={s.res} />}
         {typeof rd.harvestFrom === 'number' && <div className="growth-timeline">🌱 Planted → 🌿 A simulated month later → 🥬 Harvest<br /><strong>{harvestFor(C.rounds, rd, s.ons).f || 0} Food from your earlier lamps</strong><br /><small>Included in this round’s preview and result.</small></div>}
         {items.some(it => it.laterEff?.f && s.on[it.id]) && <div className="growth-timeline" aria-label="Simulated plant growth">🌱 Seed → 🌿 Growing → 🥬 Harvest in a later round<br /><small>Simulated time; food is added only at the mission’s harvest.</small></div>}

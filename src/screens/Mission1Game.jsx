@@ -256,7 +256,7 @@ function Mission1Run({ onReplay, practice, previous, onFinish }) {
           <span aria-hidden="true" style={{ flex: 1, display: 'grid', gridTemplateColumns: `repeat(${MISSION1.maxPower}, minmax(0, 1fr))`, gap: 3 }}>
             {Array.from({ length: MISSION1.maxPower }, (_, i) => <span key={i} style={{ height: 10, borderRadius: 3, background: i < r.p ? 'var(--yellow)' : 'rgba(255,255,255,0.22)' }} />)}
           </span>
-          {(s.lastD.p || 0) !== 0 && <span className="a-pop" style={{ flex: 'none', padding: '0 6px', borderRadius: 10, background: s.lastD.p > 0 ? 'var(--gain-color)' : 'var(--loss-color)', color: 'var(--navy)', fontWeight: 800, fontSize: 13 }}>{s.lastD.p > 0 ? `+${s.lastD.p}` : `−${Math.abs(s.lastD.p)}`}</span>}
+          {(s.lastD.p || 0) !== 0 && <span className="a-pop" style={{ flex: 'none', padding: '0 6px', borderRadius: 10, background: s.lastD.p > 0 ? 'var(--gain-color)' : 'var(--loss-color)', color: 'var(--navy)', fontWeight: 800, fontSize: 13 }}>{s.lastD.p > 0 ? '▲' : '▼'}</span>}
         </div>
       </div>
 
@@ -416,19 +416,19 @@ function m1Report(s, end) {
   const choices = [];
   choices.push(site === 'ridge'
     ? { icon: ICONS.battery, iconBg: '#FFF4C2', title: 'Built on Sunny Ridge', got: 'lots of sun for power', gave: 'easy water (the ice is far)',
-      tip: 'Commander, we built on Sunny Ridge, just like NASA plans to! We got lots of sunshine for power. But we gave up easy water, because the ice was far away.' }
+      visual: { words: [{ text: 'Lots of sun for power', good: true }, { text: 'The ice is far away', good: false }] }, tip: 'Commander, we built on Sunny Ridge, just like NASA plans to! We got lots of sunshine for power. But we gave up easy water, because the ice was far away.' }
     : { icon: ICONS.ice, iconBg: '#D7F0FF', title: 'Built at Crater Edge', got: 'ice close by', gave: 'sunshine for power',
-      tip: 'We built at Crater Edge, right next to the ice, so water was easy. But we gave up sunshine, so our battery charged slowly. NASA picks the sunny rim instead.' });
+      visual: { words: [{ text: 'Ice close by', good: true }, { text: 'Little sun for power', good: false }] }, tip: 'We built at Crater Edge, right next to the ice, so water was easy. But we gave up sunshine, so our battery charged slowly. NASA picks the sunny rim instead.' });
   if (site === 'ridge') {
     choices.push(n
-      ? { icon: ICONS.drop, iconBg: '#D7F0FF', title: `Sent the rover for ice ${n} ${n === 1 ? 'time' : 'times'}`, got: `+${R.iceTripWater.points * n} Water`, gave: `${R.roverTripPower.points * n} Power`,
+      ? { icon: ICONS.drop, iconBg: '#D7F0FF', title: `Sent the rover for ice ${n} ${n === 1 ? 'time' : 'times'}`, got: `+${R.iceTripWater.points * n} Water`, gave: `${R.roverTripPower.points * n} Power`, visual: { deltas: { w: 1, p: -1 } },
         tip: `So our rover drove to the crater ${n} ${n === 1 ? 'time' : 'times'}. It brought back ${R.iceTripWater.points * n} Water, but the trips used ${R.roverTripPower.points * n} Power. Getting one thing cost us another!` }
-      : { icon: ICONS.drop, iconBg: '#D7F0FF', title: 'Kept the rover parked', got: 'saved Power', gave: 'Water stayed low', tip: 'You kept the rover parked. That saved Power, but our Water stayed low.' });
+      : { icon: ICONS.drop, iconBg: '#D7F0FF', title: 'Kept the rover parked', got: 'saved Power', gave: 'Water stayed low', visual: { words: [{ text: 'Saved battery power', good: true }, { text: 'Water stayed low', good: false }] }, tip: 'You kept the rover parked. That saved Power, but our Water stayed low.' });
   } else {
     choices.push(n
-      ? { icon: ICONS.battery, iconBg: '#FFF4C2', title: `Carried ${n} solar ${n === 1 ? 'panel' : 'panels'} into the sun`, got: `+${R.panelTripPower.points * n} Power`, gave: `${R.outdoorShield.points * n} Radiation safety`,
+      ? { icon: ICONS.battery, iconBg: '#FFF4C2', title: `Carried ${n} solar ${n === 1 ? 'panel' : 'panels'} into the sun`, got: `+${R.panelTripPower.points * n} Power`, gave: `${R.outdoorShield.points * n} Radiation safety`, visual: { deltas: { p: 1, s: -1 } },
         tip: `You carried ${n} solar ${n === 1 ? 'panel' : 'panels'} into the sun. We got ${R.panelTripPower.points * n} more Power, but working outside used ${R.outdoorShield.points * n} Radiation safety of radiation protection.` }
-      : { icon: ICONS.battery, iconBg: '#FFF4C2', title: 'Carried no extra panels', got: 'saved Radiation safety', gave: 'Power stayed low', tip: 'You stayed inside and carried no panels. That saved our Radiation safety, but Power stayed low.' });
+      : { icon: ICONS.battery, iconBg: '#FFF4C2', title: 'Carried no extra panels', got: 'saved Radiation safety', gave: 'Power stayed low', visual: { words: [{ text: 'Crew stayed protected', good: true }, { text: 'Power stayed low', good: false }] }, tip: 'You stayed inside and carried no panels. That saved our Radiation safety, but Power stayed low.' });
   }
   const on = MISSION1.machines.filter((m) => s.on[m.id]);
   const off = MISSION1.machines.filter((m) => !s.on[m.id]);
@@ -437,10 +437,13 @@ function m1Report(s, end) {
   const cells = m1Compute({ site, taps: n, on: {} }).p;
   const used = m1Used(s.on);
   const got = chips(gain, keys).gain || 'nothing extra';
-  let tip = `You switched on ${on.length ? listWords(on.map((m) => m.name)) : 'nothing'}. We got ${got}.`;
-  if (off.length) tip += ` The trade-off: that used ${used} of our ${cells} cells, so ${listWords(off.map((m) => m.name))} stayed off.`;
+  const more = listWords(Object.keys(gain).map((k) => resourceName(k)));
+  let tip = on.length ? `You powered the ${listWords(on.map((m) => m.name))}${more ? ` and got more ${more}` : ''}.` : 'You kept every machine off to save the battery.';
+  if (off.length) tip += ` They used ${used} of ${cells} battery cells, so ${off.length === 1 ? `the ${off[0].name} had` : `${off.length} other machines had`} to wait. A cell spent on one machine can’t run another!`;
   if (s.on.wall) tip += ' The Moon-dirt wall will protect us from a solar storm later!';
-  choices.push({ icon: (on[0] || MISSION1.machines[0]).icon, iconBg: (on[0] || MISSION1.machines[0]).color, title: `Powered: ${on.map((m) => m.name).join(', ') || 'nothing'}`, got, gave: `${used} of ${cells} cells${off.length ? `, ${listWords(off.map((m) => m.name))} off` : ''}`, tip });
+  const dayD = {}; if (s.before) Object.keys(end).forEach((k) => { if (k !== 'p' && end[k] !== s.before[k]) dayD[k] = end[k] - s.before[k]; });
+  choices.push({ visual: { machines: { on: on.map((m) => ({ name: m.name, icon: m.icon, color: m.color })), off: off.map((m) => ({ name: m.name, icon: m.icon })) }, cells: { used, total: cells }, deltas: dayD },
+    icon: (on[0] || MISSION1.machines[0]).icon, iconBg: (on[0] || MISSION1.machines[0]).color, title: `Powered: ${on.map((m) => m.name).join(', ') || 'nothing'}`, got, gave: `${used} of ${cells} cells${off.length ? ` · ${off.length} ${off.length === 1 ? 'machine' : 'machines'} off` : ''}`, tip });
   const meters = keys.map((k) => ({ key: k, from: MISSION1.start[k], to: end[k] }));
   const ns = startFor(MISSION_2, readBase(getProgress()));
   const carry = `${site === 'ridge' ? 'Sunny Ridge' : 'Crater Edge'} home${s.on.wall ? ' and a Moon-dirt wall' : ''}. Mission 2 starts with ${listWords(MISSION_2.carry.map((k) => `${resourceName(k)} ${ns[k]}`))} from your base.`;
